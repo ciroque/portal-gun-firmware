@@ -21,6 +21,7 @@ must allow trigger and lighting operation to continue.
 
 ## Consequences
 
-Amplifier selection, asset format, storage layout, and playback implementation
-remain open until hardware and assets are available. Networking adds no initial
+Amplifier and speaker selection are recorded in [ADR-0010](0010-audio-hardware.md).
+Asset format, storage layout, and playback implementation remain open.
+Networking adds no initial
 runtime dependency or service subsystem.

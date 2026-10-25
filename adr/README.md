@@ -18,11 +18,11 @@ architecture proposal or hardware validation.
 | [0007](0007-native-audio-and-standalone-operation.md) | Prefer native audio and keep operation independent of networking | Accepted |
 | [0008](0008-gpio-allocation.md) | Allocate GPIOs while preserving programming and debug interfaces | Accepted; board photos checked |
 | [0009](0009-defer-muzzle-emitter.md) | Defer muzzle emitter; retain driver selection and procurement history | Accepted |
+| [0010](0010-audio-hardware.md) | Use Adafruit #3006 with one Shutao 4 Ω / 3 W speaker | Accepted |
 
 Use sequential numbers and descriptive filenames. New decisions can start as
 **Proposed** and become **Accepted** when agreed. Preserve old records when a
 decision changes: mark them **Superseded by ADR-NNNN** and link the replacement.
 
-Still open: audio
-amplifier and asset format, charge-stage thresholds, and the detailed component
+Still open: overall power budget, audio asset format, charge-stage thresholds, and the detailed component
 layout. Record these when decided.
