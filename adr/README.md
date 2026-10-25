@@ -21,6 +21,7 @@ architecture proposal or hardware validation.
 | [0010](0010-audio-hardware.md) | Use Adafruit #3006 with one Shutao 4 Ω / 3 W speaker | Accepted |
 | [0011](0011-power-budget.md) | Budget initial-build power and validate the candidate supply | Proposed |
 | [0012](0012-charge-led-timing.md) | Space charge LED transitions across the spin-up duration | Accepted |
+| [0013](0013-settings-feedback.md) | Provide nonblocking curve and color feedback with trigger interruption | Accepted |
 
 Use sequential numbers and descriptive filenames. New decisions can start as
 **Proposed** and become **Accepted** when agreed. Preserve old records when a
