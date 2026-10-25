@@ -23,7 +23,7 @@ Numbers are GPIO identifiers, not header positions.
 | Charge LED 1 | 9 | Output |
 | Charge LED 2 | 10 | Output |
 | Charge LED 3 | 11 | Output |
-| Muzzle enable | 12 | Active-high switching control |
+| Muzzle enable | 12 | Reserved; subsystem deferred by ADR-0009 |
 | I2S bit clock | 15 | Output |
 | I2S word select / LRCLK | 16 | Output |
 | I2S audio data | 17 | Output |

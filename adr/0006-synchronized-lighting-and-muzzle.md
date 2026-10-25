@@ -1,6 +1,7 @@
 # ADR-0006: Synchronize charge indicators and muzzle with firing phases
 
 - Status: Accepted
+- Muzzle portion superseded by [ADR-0009](0009-defer-muzzle-emitter.md)
 - Date: 2026-10-25
 
 ## Context
