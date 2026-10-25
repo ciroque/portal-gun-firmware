@@ -20,6 +20,9 @@ not an MCU input.
 
 ## Consequences
 
+[ADR-0011](0011-power-budget.md) records the initial load budget and outstanding
+capacity checks; the planned parts are not yet validated for the combined load.
+
 Firmware does not implement charging or logical master-power handling. Final
 wiring, regulator capacity under combined loads, and component availability still
 require confirmation; this decision is not an electrical validation.
