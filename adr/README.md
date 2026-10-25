@@ -24,10 +24,12 @@ architecture proposal or hardware validation.
 | [0013](0013-settings-feedback.md) | Provide nonblocking curve and color feedback with trigger interruption | Accepted |
 | [0014](0014-audio-events-and-failed-shots.md) | Map audio events and add a 5% cosmetic failed-shot outcome | Accepted |
 | [0015](0015-audio-format-and-storage.md) | Embed mono 44.1 kHz 16-bit PCM WAV playback assets in firmware flash | Accepted |
+| [0016](0016-firmware-component-architecture.md) | Separate portable effect logic from ESP-IDF adapters; use controller and audio tasks | Accepted baseline |
+| [0017](0017-test-framework-and-tdd.md) | Use doctest for host TDD and Unity for target-specific checks | Accepted |
 
 Use sequential numbers and descriptive filenames. New decisions can start as
 **Proposed** and become **Accepted** when agreed. Preserve old records when a
 decision changes: mark them **Superseded by ADR-NNNN** and link the replacement.
 
-Still open: overall power budget validation and the detailed component
-layout. Record these when decided.
+Still open: overall power budget validation and implementation/bench tuning
+identified in ADR-0016. Component boundaries and layout are established there.

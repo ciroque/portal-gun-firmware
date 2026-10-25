@@ -21,7 +21,8 @@ waits and introduce queues or timers only where they improve correctness or clar
 ## Consequences
 
 Timing and synchronization have a common owner, and pure logic can be tested on
-the host. Component APIs and repository layout still need a proposal. Replacing
+the host. [ADR-0016](0016-firmware-component-architecture.md) establishes component
+boundaries, API responsibilities, repository layout, and execution model. Replacing
 the sketch's blocking curve-feedback blink must explicitly address input behavior
 while retaining its visible feedback; [ADR-0013](0013-settings-feedback.md)
 specifies the accepted behavior.
