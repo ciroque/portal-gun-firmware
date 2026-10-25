@@ -22,10 +22,12 @@ architecture proposal or hardware validation.
 | [0011](0011-power-budget.md) | Budget initial-build power and validate the candidate supply | Proposed |
 | [0012](0012-charge-led-timing.md) | Space charge LED transitions across the spin-up duration | Accepted |
 | [0013](0013-settings-feedback.md) | Provide nonblocking curve and color feedback with trigger interruption | Accepted |
+| [0014](0014-audio-events-and-failed-shots.md) | Map audio events and add a 5% cosmetic failed-shot outcome | Accepted |
+| [0015](0015-audio-format-and-storage.md) | Embed mono 44.1 kHz 16-bit PCM WAV playback assets in firmware flash | Accepted |
 
 Use sequential numbers and descriptive filenames. New decisions can start as
 **Proposed** and become **Accepted** when agreed. Preserve old records when a
 decision changes: mark them **Superseded by ADR-NNNN** and link the replacement.
 
-Still open: overall power budget validation, audio asset format, and the detailed component
+Still open: overall power budget validation and the detailed component
 layout. Record these when decided.
