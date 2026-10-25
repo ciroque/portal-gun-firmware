@@ -17,5 +17,6 @@ component requires a separate, explicit decision supported by a useful library.
 ## Consequences
 
 Arduino GPIO, timing, EEPROM, and NeoPixel integration need platform replacements.
-The board's actual pinout and restrictions must be verified before assigning
-GPIOs; assignments will be centralized.
+GPIO assignments will be centralized. [ADR-0008](0008-gpio-allocation.md)
+records the allocation, its chip/board references, and confirmation of the
+physical board markings from project photos.
