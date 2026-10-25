@@ -1,5 +1,8 @@
 # Contribution workflow
 
+See [development setup](docs/development-setup.md) for the pinned ESP-IDF version
+and confirmed Git remote.
+
 Use focused branches and pull requests for changes to `main`. Name branches for
 their purpose, for example `feat/controller-core`, `fix/trigger-debounce`, or
 `docs/build-instructions`. Keep each PR centered on a cohesive change; split
