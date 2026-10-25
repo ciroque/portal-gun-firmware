@@ -20,10 +20,11 @@ architecture proposal or hardware validation.
 | [0009](0009-defer-muzzle-emitter.md) | Defer muzzle emitter; retain driver selection and procurement history | Accepted |
 | [0010](0010-audio-hardware.md) | Use Adafruit #3006 with one Shutao 4 Ω / 3 W speaker | Accepted |
 | [0011](0011-power-budget.md) | Budget initial-build power and validate the candidate supply | Proposed |
+| [0012](0012-charge-led-timing.md) | Space charge LED transitions across the spin-up duration | Accepted |
 
 Use sequential numbers and descriptive filenames. New decisions can start as
 **Proposed** and become **Accepted** when agreed. Preserve old records when a
 decision changes: mark them **Superseded by ADR-NNNN** and link the replacement.
 
-Still open: overall power budget, audio asset format, charge-stage thresholds, and the detailed component
+Still open: overall power budget validation, audio asset format, and the detailed component
 layout. Record these when decided.

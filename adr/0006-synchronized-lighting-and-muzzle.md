@@ -22,6 +22,7 @@ The current preferred switch is Adafruit #5648. Provide a heat spreader.
 
 ## Consequences
 
-Charge-stage thresholds remain to be selected. Muzzle current limiting remains
-open; selecting a switch does not resolve it. Final GPIOs, indicator resistors,
-and electrical performance require hardware verification.
+Charge-stage timing is specified in [ADR-0012](0012-charge-led-timing.md).
+Muzzle selection and deferral are recorded in ADR-0009, and GPIO allocation in
+ADR-0008. Indicator resistors and electrical performance require hardware
+verification.
