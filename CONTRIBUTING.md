@@ -1,5 +1,16 @@
 # Contribution workflow
 
+See [development setup](docs/development-setup.md) for the pinned ESP-IDF version.
+
+## Git hosting
+
+The repository is [ciroque/portal-gun-firmware](https://github.com/ciroque/portal-gun-firmware),
+with `main` as the default branch and
+`git@github.com:ciroque/portal-gun-firmware` as the `origin` fetch/push URL.
+Open PRs through GitHub's web UI or authenticated `gh`.
+
+## Branches and commits
+
 Use focused branches and pull requests for changes to `main`. Name branches for
 their purpose, for example `feat/controller-core`, `fix/trigger-debounce`, or
 `docs/build-instructions`. Keep each PR centered on a cohesive change; split
