@@ -22,7 +22,10 @@ namespace portal {
 I2sAudio::~I2sAudio() {
     ready_.store(false);
     if (task_) vTaskDelete(task_);
-    if (channel_) { i2s_channel_disable(channel_); i2s_del_channel(channel_); }
+    if (channel_) {
+        if (channel_enabled_) i2s_channel_disable(channel_);
+        i2s_del_channel(channel_);
+    }
     if (commands_) vQueueDelete(commands_);
 }
 bool I2sAudio::init() {
@@ -35,12 +38,12 @@ bool I2sAudio::init() {
         else ESP_LOGW("audio", "Invalid/missing asset: %s", names[i]);
     }
     i2s_chan_config_t config = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
-    config.dma_desc_num = 4;
-    config.dma_frame_num = 64;
+    config.dma_desc_num = tuning::AudioDmaDescriptors;
+    config.dma_frame_num = tuning::AudioDmaFrames;
     config.auto_clear_after_cb = true; // Underrun/idle produces silence, never a repeated last buffer.
     auto error = i2s_new_channel(&config, &channel_, nullptr);
     i2s_std_config_t standard{};
-    standard.clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(44100);
+    standard.clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(tuning::AudioSampleRateHz);
     standard.slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_STEREO);
     standard.gpio_cfg.mclk = I2S_GPIO_UNUSED;
     standard.gpio_cfg.bclk = static_cast<gpio_num_t>(pins::I2sBclk);
@@ -48,14 +51,21 @@ bool I2sAudio::init() {
     standard.gpio_cfg.dout = static_cast<gpio_num_t>(pins::I2sData);
     standard.gpio_cfg.din = I2S_GPIO_UNUSED;
     if (error == ESP_OK) error = i2s_channel_init_std_mode(channel_, &standard);
-    if (error == ESP_OK) error = i2s_channel_enable(channel_);
+    if (error == ESP_OK) {
+        error = i2s_channel_enable(channel_);
+        channel_enabled_ = error == ESP_OK;
+    }
     if (error != ESP_OK) {
         ESP_LOGW("audio", "I2S unavailable: %s; controller will continue silently", esp_err_to_name(error));
+        if (channel_) { i2s_del_channel(channel_); channel_ = nullptr; }
         return false;
     }
     commands_ = xQueueCreate(1, sizeof(Command));
     if (!commands_ || xTaskCreate(taskEntry, "portal_audio", 4096, this, 5, &task_) != pdPASS) {
         ESP_LOGW("audio", "Playback task unavailable; controller will continue silently");
+        if (commands_) { vQueueDelete(commands_); commands_ = nullptr; }
+        if (channel_enabled_) { i2s_channel_disable(channel_); channel_enabled_ = false; }
+        if (channel_) { i2s_del_channel(channel_); channel_ = nullptr; }
         return false;
     }
     ready_.store(true);
@@ -81,32 +91,49 @@ std::uint32_t I2sAudio::durationMs(Sound sound) const {
 }
 void I2sAudio::taskEntry(void* self) { static_cast<I2sAudio*>(self)->run(); }
 bool I2sAudio::silence() {
-    // Flush one whole DMA ring on replacement. At 44.1 kHz this is ~5.8 ms;
-    // existing buffered samples may still be audible briefly after cancellation.
-    const std::array<std::int16_t, 4 * 64 * 2> zeros{};
+    // Flush one whole DMA ring on replacement; buffered samples can remain audible briefly.
+    static constexpr std::array<std::int16_t, tuning::AudioDmaDescriptors * tuning::AudioDmaFrames * tuning::AudioSlots> zeros{};
     std::size_t written = 0;
-    const auto error = i2s_channel_write(channel_, zeros.data(), sizeof(zeros), &written, 20);
-    return error == ESP_OK && written == sizeof(zeros);
+    const auto size = zeros.size() * sizeof(zeros[0]);
+    const auto error = i2s_channel_write(channel_, zeros.data(), size, &written, 20);
+    return error == ESP_OK && written == size;
+}
+bool I2sAudio::recoverChannel() {
+    if (channel_enabled_) {
+        const auto error = i2s_channel_disable(channel_);
+        if (error == ESP_OK || error == ESP_ERR_INVALID_STATE) channel_enabled_ = false;
+        else return false;
+    }
+    if (i2s_channel_enable(channel_) != ESP_OK) return false;
+    channel_enabled_ = true;
+    return true;
 }
 void I2sAudio::run() {
     Command current{Sound::Startup, 0, true};
     std::size_t position = 0;
     bool active = false, draining = false;
     std::uint32_t drain_start = 0;
-    std::array<std::int16_t, 64 * 2> output{};
+    std::array<std::int16_t, tuning::AudioDmaFrames * tuning::AudioSlots> output{};
     for (;;) {
         Command command{};
         const auto wait = active ? TickType_t{0} : draining ? TickType_t{1} : portMAX_DELAY;
         if (xQueueReceive(commands_, &command, wait) == pdTRUE) {
-            if (active || draining) completed_.store(current.token);
+            const bool replace_playback = active || draining;
+            if (replace_playback) completed_.store(current.token);
             active = false; draining = false;
-            if (!silence()) {
-                ready_.store(false);
+            if (replace_playback && !silence()) {
+                if (recoverChannel() && silence()) {
+                    // A recovered channel is ready for the replacement command.
+                } else {
+                    ready_.store(false);
+                }
+            }
+            if (!ready_.load()) {
                 completed_.store(command.token);
-                ESP_LOGW("audio", "DMA flush failed; playback disabled");
+                ESP_LOGW("audio", "DMA flush/recovery failed; playback disabled");
                 continue;
             }
-            if (command.stop || !ready_.load()) continue;
+            if (command.stop) continue;
             current = command; position = 0; active = true;
             ESP_LOGI("audio", "play %s", names[static_cast<unsigned>(current.sound)]);
         }
@@ -115,17 +142,27 @@ void I2sAudio::run() {
         }
         if (!active) continue;
         const auto& wav = assets_[static_cast<unsigned>(current.sound)];
-        const auto count = std::min(std::size_t{64}, wav.sample_count - position);
+        const auto count = std::min(std::size_t{tuning::AudioDmaFrames}, wav.sample_count - position);
         for (std::size_t i = 0; i < count; ++i) {
             const auto sample = pcmSample(wav.samples + (position + i) * 2, tuning::AudioVolumeQ15);
-            output[i * 2] = sample; output[i * 2 + 1] = sample; // Same mono signal in both I2S slots.
+            output[i * tuning::AudioSlots] = sample;
+            output[i * tuning::AudioSlots + 1] = sample; // Same mono signal in both I2S slots.
         }
+        const auto byte_count = count * tuning::AudioSlots * sizeof(std::int16_t);
         std::size_t written = 0;
-        const auto error = i2s_channel_write(channel_, output.data(), count * 4, &written, 20);
-        if (error != ESP_OK || written != count * 4) {
-            ready_.store(false); active = false; completed_.store(current.token);
-            ESP_LOGW("audio", "Playback failed: %s; continuing silently", esp_err_to_name(error));
-            continue;
+        auto error = i2s_channel_write(channel_, output.data(), byte_count, &written, 20);
+        if (error != ESP_OK || written != byte_count) {
+            if (recoverChannel()) {
+                written = 0;
+                error = i2s_channel_write(channel_, output.data(), byte_count, &written, 20);
+            }
+            if (error != ESP_OK || written != byte_count) {
+                ready_.store(false);
+                active = false;
+                completed_.store(current.token);
+                ESP_LOGW("audio", "Playback failed: %s; recovery failed", esp_err_to_name(error));
+                continue;
+            }
         }
         position += count;
         if (position == wav.sample_count) {

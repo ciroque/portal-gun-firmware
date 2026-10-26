@@ -15,8 +15,8 @@ public:
 private:
     rmt_channel_handle_t channel_ = nullptr;
     rmt_encoder_handle_t encoder_ = nullptr;
-    std::array<rmt_symbol_word_t, tuning::Pixels * 24 + 1> symbols_{};
-    Frame previous_{};
-    bool ring_ready_ = false, charge_ready_ = false, have_frame_ = false;
+    std::array<std::uint8_t, tuning::Pixels * 3> bytes_{};
+    Frame previous_{}, pending_frame_{};
+    bool ring_ready_ = false, charge_ready_ = false, have_frame_ = false, tx_pending_ = false;
 };
 } // namespace portal

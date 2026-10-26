@@ -7,10 +7,15 @@ SettingsStore::~SettingsStore() { if (handle_) nvs_close(handle_); }
 Settings SettingsStore::load() {
     Settings settings;
     auto error = nvs_flash_init();
+    if (error == ESP_ERR_NVS_NO_FREE_PAGES || error == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_LOGW("config", "NVS format/capacity incompatible; resetting settings partition");
+        error = nvs_flash_erase();
+        if (error == ESP_OK) error = nvs_flash_init();
+    }
     if (error == ESP_OK) error = nvs_open("portal", NVS_READWRITE, &handle_);
     if (error != ESP_OK) {
         ESP_LOGW("config", "NVS unavailable (%s); using volatile defaults", esp_err_to_name(error));
-        return settings; // Do not erase unrelated NVS data to recover this prop's settings.
+        return settings;
     }
     ConfigBytes bytes{};
     std::size_t size = bytes.size();

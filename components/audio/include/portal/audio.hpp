@@ -25,11 +25,13 @@ private:
     static void taskEntry(void* self);
     void run();
     bool silence();
+    bool recoverChannel();
     std::array<WavView, 4> assets_{};
     i2s_chan_handle_t channel_ = nullptr;
     QueueHandle_t commands_ = nullptr;
     TaskHandle_t task_ = nullptr;
     std::atomic<bool> ready_{false};
     std::atomic<std::uint32_t> completed_{0};
+    bool channel_enabled_ = false;
 };
 } // namespace portal

@@ -26,7 +26,7 @@ std::optional<WavView> parseWav(const std::uint8_t* bytes, std::size_t size) {
         const auto* chunk = bytes + offset;
         if (!std::memcmp(header, "fmt ", 4)) {
             if (format || chunk_size < 16 || u16(chunk) != 1 || u16(chunk + 2) != 1 ||
-                u32(chunk + 4) != 44100 || u32(chunk + 8) != 88200 ||
+                u32(chunk + 4) != tuning::AudioSampleRateHz || u32(chunk + 8) != tuning::AudioSampleRateHz * 2 ||
                 u16(chunk + 12) != 2 || u16(chunk + 14) != 16) return std::nullopt;
             format = true;
         } else if (!std::memcmp(header, "data", 4)) {
