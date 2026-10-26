@@ -45,16 +45,3 @@ and its matching tools before activating it.
 See the matching tag in [Espressif's releases](https://github.com/espressif/esp-idf/releases)
 for release notes. Host tests will use their own CMake build without requiring
 IDF (ADR-0017).
-
-
-## Git hosting
-
-- Repository: [ciroque/portal-gun-firmware](https://github.com/ciroque/portal-gun-firmware).
-- `origin` fetch/push URL: `git@github.com:ciroque/portal-gun-firmware`.
-- Default branch: `main`, confirmed with `git ls-remote --symref origin HEAD`.
-- SSH read access was confirmed on 2026-10-25. Write access, branch protection,
-  and PR permissions have not been checked.
-
-Use the focused branch/PR and Conventional Commit workflow in
-[CONTRIBUTING.md](../CONTRIBUTING.md). GitHub CLI (`gh`) was not on PATH during
-inspection; PRs can be opened through GitHub or an authenticated CLI once set up.
