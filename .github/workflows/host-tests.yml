@@ -2,7 +2,6 @@ name: Host tests
 
 on:
   pull_request:
-    branches: [main]
   push:
     branches: [main]
   workflow_dispatch:
@@ -11,8 +10,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # PR updates supersede earlier runs. Keep every main/manual run, including
+  # pending ones: a shared group permits only one pending run even without cancellation.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   host-tests:
@@ -26,10 +27,12 @@ jobs:
           persist-credentials: false
 
       - name: Configure host tests
-        run: cmake -S test -B build/host -G Ninja -DCMAKE_BUILD_TYPE=Debug
+        run: >-
+          cmake -S test -B build/host -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
 
       - name: Build host tests
-        run: cmake --build build/host --parallel 2
+        run: cmake --build build/host --parallel "$(nproc)"
 
       - name: Run host tests
         run: ctest --test-dir build/host --output-on-failure --no-tests=error
