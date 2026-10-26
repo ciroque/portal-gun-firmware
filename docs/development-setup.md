@@ -6,8 +6,15 @@ The project's exact ESP-IDF tag is recorded in [`.esp-idf-version`](../.esp-idf-
 Use that tag for local builds and future CI; do not use a moving release branch.
 The initial baseline uses the newer verified bugfix release in the 6.0 series;
 there is no project-specific reason to retain the previous patch version.
-This file records the pin; it does not automatically install or enforce the SDK.
-The firmware scaffold should check the SDK version during configuration.
+Firmware configuration and an always-run build target read this file and reject
+a mismatched SDK, including changes to the checkout after configuration.
+Both the version components and the Git description must match the pinned tag;
+prerelease, post-release, and dirty checkouts are rejected. The version file
+does not install the SDK automatically. Git failures retain the original
+diagnostic (for example, ownership restrictions or missing repository metadata);
+resolve that specific problem rather than disabling Git's safety checks globally.
+The always-run guard checks tracked SDK and submodule changes through
+`git describe --dirty`, so even incremental builds incur a Git check.
 
 The target is `esp32s3`. Start in this repository's root and print the exact
 installation-guide URL from the pin:
@@ -55,4 +62,8 @@ and its matching tools before activating it.
 
 See the matching tag in [Espressif's releases](https://github.com/espressif/esp-idf/releases)
 for release notes. Host tests will use their own CMake build without requiring
-IDF (ADR-0017).
+IDF (ADR-0017). See [the project README](../README.md) for firmware and host-test
+commands. If changing hardware defaults in an existing build, review the generated
+`sdkconfig`: `sdkconfig.defaults` supplies initial values, not overrides for
+settings already saved there. Generated configuration and build files are ignored
+by Git; commit intentional baseline changes to `sdkconfig.defaults`.

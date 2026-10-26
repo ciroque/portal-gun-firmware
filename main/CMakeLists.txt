@@ -1,0 +1,4 @@
+idf_component_register(SRCS "main.cpp" REQUIRES platform log)
+# IDF appends its own language flag after CMake's CXX_STANDARD flag. Override
+# it in the component's options so the effective (last) flag is C++17.
+target_compile_options(${COMPONENT_LIB} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:-std=c++17>")
