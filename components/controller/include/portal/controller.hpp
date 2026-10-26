@@ -39,6 +39,6 @@ private:
     bool settings_changed_ = false, audio_pending_ = false;
     std::uint32_t last_frame_ = 0, phase_start_ = 0, spin_start_ = 0, spin_duration_ = 0;
     std::uint32_t feedback_start_ = 0, audio_start_ = 0, audio_timeout_ = 0, audio_id_ = 0;
-    int idle_step_ = 0, idle_direction_ = 1, spin_step_ = 0, discharge_step_ = 0, decay_level_ = 220;
+    int idle_step_ = 0, idle_direction_ = 1, spin_step_ = 0, discharge_step_ = 0, decay_level_ = tuning::DecayInitial;
 };
 } // namespace portal

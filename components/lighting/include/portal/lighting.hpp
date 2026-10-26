@@ -1,5 +1,6 @@
 #pragma once
 #include "portal/settings.hpp"
+#include "portal/tuning.hpp"
 #include <array>
 #include <cstdint>
 
@@ -7,7 +8,7 @@ namespace portal {
 struct Rgb { std::uint8_t r = 0, g = 0, b = 0; };
 inline bool operator==(Rgb a, Rgb b) { return a.r == b.r && a.g == b.g && a.b == b.b; }
 inline bool operator!=(Rgb a, Rgb b) { return !(a == b); }
-using Frame = std::array<Rgb, 12>;
+using Frame = std::array<Rgb, tuning::Pixels>;
 struct Palette { Rgb idle1, idle2, medium, hot, flash; };
 Palette palette(PortalColor color);
 Rgb blend(Rgb from, Rgb to, int step, int total);

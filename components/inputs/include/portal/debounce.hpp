@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "portal/tuning.hpp"
 
 namespace portal {
 // Order deliberately matches the sketch: a simultaneous trigger wins over settings.
@@ -9,7 +10,7 @@ public:
     bool poll(bool released, std::uint32_t now) {
         if (released != last_reading_) changed_at_ = now;
         bool pressed = false;
-        if (now - changed_at_ > 30 && released != stable_) {
+        if (now - changed_at_ > tuning::DebounceMs && released != stable_) {
             stable_ = released;
             pressed = !stable_;
         }

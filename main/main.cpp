@@ -4,6 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "portal/controller.hpp"
+#include "portal/audio.hpp"
 #include "portal/gpio_inputs.hpp"
 #include "portal/ring.hpp"
 #include "portal/store.hpp"
@@ -16,22 +17,16 @@ class HardwareRandom : public portal::ShotRandom {
         return value % 100 < 5;
     }
 };
-class SilentAudio : public portal::AudioPort {
-    bool play(portal::Sound, std::uint32_t) override { return false; }
-    void stop() override {}
-    bool finished(std::uint32_t) const override { return true; }
-    std::uint32_t durationMs(portal::Sound) const override { return 0; }
-};
 }
 
 extern "C" void app_main() {
     static portal::SettingsStore store;
     static portal::RingLights lights;
     static portal::GpioInputs inputs;
-    static SilentAudio audio;
+    static portal::I2sAudio audio;
     static HardwareRandom random;
     const auto settings = store.load();
-    lights.init(); inputs.init();
+    lights.init(); inputs.init(); audio.init();
     portal::Controller controller(lights, audio, random, settings);
     auto now = [] { return static_cast<std::uint32_t>(esp_timer_get_time() / 1000); };
     controller.begin(now());

@@ -22,7 +22,7 @@ void Controller::play(Sound sound, std::uint32_t now) {
     if (++audio_id_ == 0) ++audio_id_;
     audio_pending_ = audio_.play(sound, audio_id_);
     audio_start_ = now;
-    audio_timeout_ = std::min(audio_.durationMs(sound), std::uint32_t{10000}) + 250;
+    audio_timeout_ = std::min(audio_.durationMs(sound), tuning::MaxAudioDurationMs) + tuning::AudioTimeoutMarginMs;
 }
 void Controller::resetIdle(std::uint32_t last_frame) {
     idle_step_ = 0; idle_direction_ = 1; last_frame_ = last_frame;
@@ -62,11 +62,11 @@ void Controller::press(Button button, std::uint32_t now) {
     }
 }
 void Controller::idle(std::uint32_t now) {
-    if (now - last_frame_ < 20) return;
+    if (now - last_frame_ < tuning::IdleFrameMs) return;
     last_frame_ = now;
     present(idleFrame(palette(settings_.color), idle_step_));
     idle_step_ += idle_direction_;
-    if (idle_step_ >= 100) { idle_step_ = 100; idle_direction_ = -1; }
+    if (idle_step_ >= tuning::IdleSteps) { idle_step_ = tuning::IdleSteps; idle_direction_ = -1; }
     if (idle_step_ <= 0) { idle_step_ = 0; idle_direction_ = 1; }
 }
 void Controller::visualComplete(std::uint32_t now) {
@@ -84,13 +84,14 @@ void Controller::tick(std::uint32_t now) {
     case State::Idle:
         if (feedback_ != Feedback::None) {
             const auto elapsed = now - feedback_start_;
-            const auto duration = feedback_ == Feedback::Color ? 200u :
-                240u * (static_cast<unsigned>(settings_.curve) + 1);
+            constexpr auto period = tuning::CurveOnMs + tuning::CurveOffMs;
+            const auto duration = feedback_ == Feedback::Color ? tuning::ColorPulseMs :
+                period * (static_cast<unsigned>(settings_.curve) + 1);
             if (elapsed >= duration) {
                 feedback_ = Feedback::None; resetIdle(now); present(fill(colors.idle1));
             } else if (feedback_ == Feedback::Curve) {
                 Frame indicator{};
-                if ((elapsed / 120) % 2 == 0) indicator[0] = {0, 255, 0};
+                if (elapsed % period < tuning::CurveOnMs) indicator[0] = {0, 255, 0};
                 if (indicator != frame_) present(indicator);
             }
         } else idle(now);
@@ -101,37 +102,37 @@ void Controller::tick(std::uint32_t now) {
         if (now - last_frame_ < spinDelay(settings_.curve, spin_step_)) break;
         last_frame_ = now;
         present(spinFrame(colors, spin_step_));
-        if (++spin_step_ == 48) {
-            state_ = State::Blast; phase_start_ = now; charge_ = 3;
+        if (++spin_step_ == tuning::SpinSteps) {
+            state_ = State::Blast; phase_start_ = now; charge_ = tuning::ChargeLeds;
             present(fill({255, 255, 255}));
             play(settings_.color == PortalColor::Blue ? Sound::FireBlue : Sound::FireOrange, now);
         }
         break;
     }
     case State::Blast:
-        if (now - phase_start_ >= 240) {
+        if (now - phase_start_ >= tuning::BlastMs) {
             state_ = State::Discharge; discharge_step_ = 0; last_frame_ = 0;
             charge_ = 0; present(frame_);
         }
         break;
     case State::Discharge:
-        if (now - last_frame_ >= 18) {
+        if (now - last_frame_ >= tuning::DischargeFrameMs) {
             last_frame_ = now; present(dischargeFrame(colors, discharge_step_, settings_.direction));
-            if (++discharge_step_ == 30) { state_ = State::Decay; decay_level_ = 220; last_frame_ = 0; }
+            if (++discharge_step_ == tuning::DischargeSteps) { state_ = State::Decay; decay_level_ = tuning::DecayInitial; last_frame_ = 0; }
         }
         break;
     case State::Decay:
-        if (now - last_frame_ >= 18) {
+        if (now - last_frame_ >= tuning::DecayFrameMs) {
             last_frame_ = now; present(fill(scale(colors.hot, decay_level_)));
-            decay_level_ -= 10;
+            decay_level_ -= tuning::DecayDecrement;
             if (decay_level_ <= 0) visualComplete(now);
         }
         break;
     case State::FailedShot: {
         const auto elapsed = now - phase_start_;
-        if (elapsed >= 200) visualComplete(now);
+        if (elapsed >= tuning::FailedFlickerMs) visualComplete(now);
         else {
-            const auto flicker = fill((elapsed / 50) % 2 == 0 ? colors.hot : Rgb{});
+            const auto flicker = fill((elapsed / tuning::FailedHalfPeriodMs) % 2 == 0 ? colors.hot : Rgb{});
             if (flicker != frame_) present(flicker);
         }
         break;

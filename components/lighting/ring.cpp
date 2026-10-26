@@ -22,7 +22,7 @@ bool RingLights::init() {
     rmt_tx_channel_config_t config{};
     config.gpio_num = static_cast<gpio_num_t>(pins::NeoPixelData);
     config.clk_src = RMT_CLK_SRC_DEFAULT;
-    config.resolution_hz = 10000000;
+    config.resolution_hz = 20000000;
     config.mem_block_symbols = 64;
     config.trans_queue_depth = 1;
     auto error = rmt_new_tx_channel(&config, &channel_);
@@ -45,13 +45,13 @@ void RingLights::present(const Frame& frame, unsigned charge_stage) {
         for (auto byte : {color.g, color.r, color.b}) for (int bit = 7; bit >= 0; --bit) {
             const bool one = (byte & (1u << bit)) != 0;
             auto& symbol = symbols_[index++];
-            symbol.level0 = 1; symbol.duration0 = one ? 9 : 3;
-            symbol.level1 = 0; symbol.duration1 = one ? 3 : 9;
+            symbol.level0 = 1; symbol.duration0 = one ? 16 : 7;
+            symbol.level1 = 0; symbol.duration1 = one ? 9 : 18;
         }
     }
     auto& reset = symbols_[index];
-    reset.level0 = 0; reset.duration0 = 1500;
-    reset.level1 = 0; reset.duration1 = 1500; // 300 us latch covers newer pixel revisions too.
+    reset.level0 = 0; reset.duration0 = 3000;
+    reset.level1 = 0; reset.duration1 = 3000; // 300 us latch covers newer pixel revisions too.
     rmt_transmit_config_t transmit{};
     auto error = rmt_transmit(channel_, encoder_, symbols_.data(), sizeof(symbols_), &transmit);
     if (error == ESP_OK) error = rmt_tx_wait_all_done(channel_, 5);

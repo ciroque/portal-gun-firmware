@@ -18,13 +18,16 @@ Rgb scale(Rgb color, int level) {
         static_cast<std::uint8_t>(color.g * level / 255),
         static_cast<std::uint8_t>(color.b * level / 255)};
 }
-int wrapPixel(int pixel) { pixel %= 12; return pixel < 0 ? pixel + 12 : pixel; }
+int wrapPixel(int pixel) {
+    constexpr auto count = static_cast<int>(tuning::Pixels);
+    pixel %= count; return pixel < 0 ? pixel + count : pixel;
+}
 Frame fill(Rgb color) { Frame frame; frame.fill(color); return frame; }
-Frame idleFrame(const Palette& colors, int step) { return fill(blend(colors.idle1, colors.idle2, step, 100)); }
+Frame idleFrame(const Palette& colors, int step) { return fill(blend(colors.idle1, colors.idle2, step, tuning::IdleSteps)); }
 Frame spinFrame(const Palette& colors, int step) {
     auto frame = fill(scale(colors.idle1, 40));
-    const int head = step % 12;
-    const int level = step * 205 / 47 + 50; // Arduino map() uses integer division.
+    const int head = wrapPixel(step);
+    const int level = step * 205 / (tuning::SpinSteps - 1) + 50; // Arduino map() uses integer division.
     frame[head] = scale(colors.hot, level);
     frame[wrapPixel(head - 1)] = scale(colors.medium, level);
     frame[wrapPixel(head - 2)] = scale(colors.medium, level / 3);
@@ -40,30 +43,31 @@ Frame dischargeFrame(const Palette& colors, int step, int direction) {
     return frame;
 }
 std::uint32_t spinDelay(Curve curve, int step) {
-    const float progress = static_cast<float>(step) / 47.0f;
+    const float progress = static_cast<float>(step) / static_cast<float>(tuning::SpinSteps - 1);
     float value = progress;
     switch (curve) {
     case Curve::Linear: break;
     case Curve::Quadratic: value = progress * progress; break;
     case Curve::Cubic: value = progress * progress * progress; break;
     case Curve::Exponential: {
-        const float numerator = static_cast<float>(std::exp(static_cast<double>(5.0f * progress)) - 1.0);
-        const float denominator = static_cast<float>(std::exp(5.0) - 1.0);
+        const float numerator = static_cast<float>(std::exp(static_cast<double>(tuning::ExponentialStrength * progress)) - 1.0);
+        const float denominator = static_cast<float>(std::exp(static_cast<double>(tuning::ExponentialStrength)) - 1.0);
         value = numerator / denominator;
         break;
     }
     case Curve::Smoothstep: value = progress * progress * (3.0f - 2.0f * progress); break;
     }
-    return static_cast<std::uint32_t>(150 - 140.0f * value);
+    const float range = tuning::SpinStartMs - tuning::SpinEndMs;
+    return static_cast<std::uint32_t>(tuning::SpinStartMs - range * value);
 }
 std::uint32_t spinDuration(Curve curve) {
     std::uint32_t total = 0;
-    for (int step = 0; step < 48; ++step) total += spinDelay(curve, step);
+    for (int step = 0; step < tuning::SpinSteps; ++step) total += spinDelay(curve, step);
     return total;
 }
 unsigned chargeStage(std::uint32_t elapsed, std::uint32_t duration) {
     if (!duration) return 0;
-    const auto stage = static_cast<std::uint64_t>(elapsed) * 3 / duration;
-    return stage > 2 ? 2 : static_cast<unsigned>(stage); // Third LED belongs to BLAST entry.
+    const auto stage = static_cast<std::uint64_t>(elapsed) * tuning::ChargeLeds / duration;
+    return stage >= tuning::ChargeLeds ? tuning::ChargeLeds - 1 : static_cast<unsigned>(stage);
 }
 } // namespace portal

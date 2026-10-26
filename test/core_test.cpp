@@ -102,6 +102,7 @@ TEST_CASE("normal firing preserves frame deadlines and the exact blast boundary"
     for (int step = 0; step < 30; ++step, now += 18) rig.controller.tick(now);
     REQUIRE(rig.controller.state() == State::Decay);
     for (int step = 0; step < 22; ++step, now += 18) rig.controller.tick(now);
+    CHECK(rig.controller.state() == State::AwaitAudio);
     // A failed audio worker cannot leave the controller busy indefinitely.
     rig.controller.tick(now + 2000);
     CHECK(rig.controller.state() == State::Idle);
@@ -151,8 +152,13 @@ TEST_CASE("failed shots flicker without blast and wait for their own audio token
     CHECK(rig.controller.state() == State::AwaitAudio);
     rig.controller.press(Button::Trigger, 301);
     CHECK(rig.random.calls == 1);
+    const auto shot_token = rig.audio.id;
+    rig.audio.id = shot_token - 1; // Late startup completion must not release this shot.
     rig.audio.done = true;
     rig.controller.tick(302);
+    CHECK(rig.controller.state() == State::AwaitAudio);
+    rig.audio.id = shot_token;
+    rig.controller.tick(303);
     CHECK(rig.controller.state() == State::Idle);
 }
 
@@ -163,4 +169,39 @@ TEST_CASE("missing audio does not prevent completion of the failed-shot effect")
     rig.controller.press(Button::Trigger, 100);
     rig.controller.tick(300);
     CHECK(rig.controller.state() == State::Idle);
+}
+
+TEST_CASE("curve feedback keeps its blink count and timing without blocking") {
+    Rig rig;
+    rig.controller.press(Button::Curve, 100); // Quadratic: two green blinks.
+    rig.controller.tick(219);
+    CHECK(rig.lights.frame[0] == Rgb{0, 255, 0});
+    rig.controller.tick(220);
+    CHECK(rig.lights.frame == Frame{});
+    rig.controller.tick(340);
+    CHECK(rig.lights.frame[0] == Rgb{0, 255, 0});
+    rig.controller.tick(460);
+    CHECK(rig.lights.frame == Frame{});
+    rig.controller.tick(580);
+    CHECK(rig.lights.frame == fill(palette(PortalColor::Blue).idle1));
+    rig.controller.press(Button::Color, 600);
+    rig.controller.tick(799);
+    CHECK(rig.lights.frame == fill(palette(PortalColor::Orange).hot));
+    rig.controller.tick(800);
+    CHECK(rig.lights.frame == fill(palette(PortalColor::Orange).idle1));
+}
+
+TEST_CASE("firing deadlines survive a millisecond rollover") {
+    Rig rig;
+    std::uint32_t now = 0xffffffd0u;
+    rig.controller.press(Button::Trigger, now);
+    for (int step = 0; step < 48; ++step) {
+        now += spinDelay(Curve::Linear, step);
+        rig.controller.tick(now);
+    }
+    REQUIRE(rig.controller.state() == State::Blast);
+    rig.controller.tick(now + 239);
+    CHECK(rig.controller.state() == State::Blast);
+    rig.controller.tick(now + 240);
+    CHECK(rig.controller.state() == State::Discharge);
 }
