@@ -13,6 +13,8 @@ prerelease, post-release, and dirty checkouts are rejected. The version file
 does not install the SDK automatically. Git failures retain the original
 diagnostic (for example, ownership restrictions or missing repository metadata);
 resolve that specific problem rather than disabling Git's safety checks globally.
+The always-run guard checks tracked SDK and submodule changes through
+`git describe --dirty`, so even incremental builds incur a Git check.
 
 The target is `esp32s3`. Start in this repository's root and print the exact
 installation-guide URL from the pin:

@@ -54,5 +54,8 @@ builds must continue to check application size.
 
 Build success does not validate PSRAM operation, wiring, lighting, sound, or the
 provisional power budget. These need the actual board and bench checks.
+QIO has not yet been tried on the physical board. If the first bench flash fails
+to boot, include flash-mode compatibility in the boot-log investigation before
+treating it as an application failure.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branches, commits, and PRs.
