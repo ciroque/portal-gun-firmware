@@ -1,8 +1,58 @@
 #include "esp_log.h"
-#include "portal/pins.hpp"
+#include "esp_random.h"
+#include "esp_timer.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "portal/controller.hpp"
+#include "portal/gpio_inputs.hpp"
+#include "portal/ring.hpp"
+#include "portal/store.hpp"
+
+namespace {
+class HardwareRandom : public portal::ShotRandom {
+    bool failedShot() override {
+        std::uint32_t value;
+        do { value = esp_random(); } while (value >= UINT32_MAX - UINT32_MAX % 100);
+        return value % 100 < 5;
+    }
+};
+class SilentAudio : public portal::AudioPort {
+    bool play(portal::Sound, std::uint32_t) override { return false; }
+    void stop() override {}
+    bool finished(std::uint32_t) const override { return true; }
+    std::uint32_t durationMs(portal::Sound) const override { return 0; }
+};
+}
 
 extern "C" void app_main() {
-    ESP_LOGI("main", "Portal gun scaffold ready; NeoPixel GPIO %d, muzzle GPIO %d reserved",
-             portal::pins::NeoPixelData, portal::pins::MuzzleReserved);
-    // Peripheral initialization and the controller loop arrive in later changes.
+    static portal::SettingsStore store;
+    static portal::RingLights lights;
+    static portal::GpioInputs inputs;
+    static SilentAudio audio;
+    static HardwareRandom random;
+    const auto settings = store.load();
+    lights.init(); inputs.init();
+    portal::Controller controller(lights, audio, random, settings);
+    auto now = [] { return static_cast<std::uint32_t>(esp_timer_get_time() / 1000); };
+    controller.begin(now());
+    ESP_LOGI("main", "Controller ready; muzzle GPIO remains reserved");
+    auto previous_state = controller.state();
+    for (;;) {
+        const auto time = now();
+        const auto presses = inputs.poll(time);
+        for (unsigned i = 0; i < presses.size(); ++i)
+            if (presses[i]) controller.press(static_cast<portal::Button>(i), time);
+        controller.tick(time);
+        if (controller.state() != previous_state) {
+            ESP_LOGI("controller", "%s -> %s", portal::stateName(previous_state), portal::stateName(controller.state()));
+            previous_state = controller.state();
+        }
+        if (controller.takeSettingsChanged()) {
+            const auto& current = controller.settings();
+            ESP_LOGI("config", "color=%u curve=%u direction=%d", static_cast<unsigned>(current.color),
+                static_cast<unsigned>(current.curve), current.direction);
+            if (!store.save(current)) ESP_LOGW("config", "Selection remains active but could not be persisted");
+        }
+        vTaskDelay(1);
+    }
 }
