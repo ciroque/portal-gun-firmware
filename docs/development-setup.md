@@ -6,10 +6,13 @@ The project's exact ESP-IDF tag is recorded in [`.esp-idf-version`](../.esp-idf-
 Use that tag for local builds and future CI; do not use a moving release branch.
 The initial baseline uses the newer verified bugfix release in the 6.0 series;
 there is no project-specific reason to retain the previous patch version.
-The firmware CMake configuration reads this file and rejects a mismatched SDK.
+Firmware configuration and an always-run build target read this file and reject
+a mismatched SDK, including changes to the checkout after configuration.
 Both the version components and the Git description must match the pinned tag;
 prerelease, post-release, and dirty checkouts are rejected. The version file
-does not install the SDK automatically.
+does not install the SDK automatically. Git failures retain the original
+diagnostic (for example, ownership restrictions or missing repository metadata);
+resolve that specific problem rather than disabling Git's safety checks globally.
 
 The target is `esp32s3`. Start in this repository's root and print the exact
 installation-guide URL from the pin:
