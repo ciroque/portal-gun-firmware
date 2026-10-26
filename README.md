@@ -25,6 +25,12 @@ and the SDK-version guard. Temporary Git checkouts exercise clean builds and
 rejection of staged/unstaged SDK edits or tag changes after configuration.
 Behavioral characterization tests will accompany the effect migration.
 
+[GitHub Actions](.github/workflows/host-tests.yml) runs this host suite on pull
+requests targeting `main` and pushes to `main`, with a manual-run option after
+the workflow is merged. The `Host tests (Linux)` job covers the board contract
+and SDK-guard fixtures using Ubuntu's host tools, without installing ESP-IDF or
+accessing hardware. Firmware cross-compilation and bench checks remain separate.
+
 ## Firmware build
 
 Install and activate the pinned SDK as described in

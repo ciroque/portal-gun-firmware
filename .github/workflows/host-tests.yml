@@ -1,0 +1,35 @@
+name: Host tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  host-tests:
+    name: Host tests (Linux)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Configure host tests
+        run: cmake -S test -B build/host -G Ninja -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build host tests
+        run: cmake --build build/host --parallel 2
+
+      - name: Run host tests
+        run: ctest --test-dir build/host --output-on-failure --no-tests=error
