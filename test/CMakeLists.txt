@@ -5,8 +5,11 @@ enable_testing()
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 add_executable(portal_tests board_pins_test.cpp)
-target_compile_features(portal_tests PRIVATE cxx_std_17)
-target_compile_options(portal_tests PRIVATE -Wall -Wextra -Wpedantic)
+set_target_properties(portal_tests PROPERTIES
+    CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES CXX_EXTENSIONS NO)
+target_compile_options(portal_tests PRIVATE
+    "$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall;-Wextra;-Wpedantic>"
+    "$<$<CXX_COMPILER_ID:MSVC>:/W4>")
 target_include_directories(portal_tests PRIVATE
     ../third_party/doctest
     ../components/platform/include)

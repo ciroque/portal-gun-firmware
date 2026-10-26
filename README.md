@@ -11,7 +11,7 @@ scaffold, and the deferred muzzle pin remains reserved.
 
 ## Host tests
 
-Requires CMake 3.22+, a C++17 compiler, a build tool, and Python 3. No ESP-IDF,
+Requires CMake 3.22+, a C++17 compiler, a build tool, Python 3, and Git. No ESP-IDF,
 network download, or attached hardware is needed; doctest is vendored.
 
 ```sh
@@ -20,7 +20,9 @@ cmake --build build/host
 ctest --test-dir build/host --output-on-failure
 ```
 
-The host suite currently checks the board pin contract and SDK-version guard.
+The host suite checks exact ADR-0008 assignments, valid GPIO ranges, pin conflicts,
+and the SDK-version guard. Temporary Git checkouts exercise clean builds and
+rejection of staged/unstaged SDK edits or tag changes after configuration.
 Behavioral characterization tests will accompany the effect migration.
 
 ## Firmware build
@@ -32,12 +34,19 @@ Install and activate the pinned SDK as described in
 idf.py -B build/firmware build
 ```
 
-The default target is `esp32s3`. Defaults select 16 MB flash, 80 MHz octal PSRAM,
-a 1 kHz FreeRTOS tick, and UART0 logging. Configuration rejects a different SDK
-release, prerelease, or modified SDK checkout. Change the pin deliberately when
+The default target is `esp32s3`, selected through `sdkconfig.defaults`. Defaults
+select 16 MB QIO flash, 80 MHz octal PSRAM,
+a 1 kHz FreeRTOS tick, and UART0 logging. Configuration and every subsequent build
+reject a different SDK release, prerelease, or modified SDK checkout. Change the pin deliberately when
 upgrading and install that SDK's matching tools.
 
-The custom partition table reserves NVS, PHY data, and a 4 MB factory application.
+The application and host tests explicitly compile as C++17 without language
+extensions. Apply the same standard requirement to portable components as they are
+introduced; ESP-IDF's own components retain their SDK-selected language standard.
+
+The custom partition table reserves NVS and a 4 MB factory application. Offsets
+are assigned automatically so the table can follow a changed partition-table
+offset. No unused PHY-data partition is reserved.
 Remaining flash is unallocated; there are no OTA slots or audio filesystem.
 Normalized audio will later be linked into the application. This layout fits
 the scaffold and provides room for the four selected sounds; future firmware
