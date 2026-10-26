@@ -2,31 +2,50 @@
 
 ## Firmware SDK
 
-The project pins **ESP-IDF v6.0.2** in [`.esp-idf-version`](../.esp-idf-version).
-Use that exact tag for local builds and CI; do not use a moving release branch.
+The project's exact ESP-IDF tag is recorded in [`.esp-idf-version`](../.esp-idf-version).
+Use that tag for local builds and future CI; do not use a moving release branch.
+The initial baseline uses the newer verified bugfix release in the 6.0 series;
+there is no project-specific reason to retain the previous patch version.
 This file records the pin; it does not automatically install or enforce the SDK.
 The firmware scaffold should check the SDK version during configuration.
 
-The target is `esp32s3`. Install the SDK and its matching tools using the
-[v6.0.2 installation guide](https://docs.espressif.com/projects/esp-idf/en/v6.0.2/esp32s3/get-started/index.html).
-For a Git-based setup in your chosen SDK directory:
+The target is `esp32s3`. See the official
+[ESP32-S3 installation guide](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/index.html)
+for prerequisites, selecting the documentation version that matches the pin.
+For a Git-based setup, start in this repository's root. The commands below
+install a separate SDK checkout under `~/esp`:
 
 ```sh
-git clone --branch v6.0.2 --recursive https://github.com/espressif/esp-idf.git esp-idf-v6.0.2
-cd esp-idf-v6.0.2
+PORTAL_REPO_DIR=$(pwd)
+PORTAL_IDF_VERSION=$(cat "$PORTAL_REPO_DIR/.esp-idf-version")
+mkdir -p "$HOME/esp"
+cd "$HOME/esp"
+git clone --branch "$PORTAL_IDF_VERSION" --recursive https://github.com/espressif/esp-idf.git "esp-idf-$PORTAL_IDF_VERSION"
+cd "esp-idf-$PORTAL_IDF_VERSION"
 ./install.sh esp32s3
 . ./export.sh
 idf.py --version
+cd "$PORTAL_REPO_DIR"
 ```
 
-The release and recursive clone instructions are documented in the
-[official release](https://github.com/espressif/esp-idf/releases/tag/v6.0.2).
-Use a separate SDK checkout rather than placing SDK sources in this repository.
-Host tests will use their own CMake build without requiring IDF (ADR-0017).
+Sourcing `export.sh` activates tools only in the current shell. In every new
+terminal, start from the repository root and activate the pinned checkout again:
 
-Environment inspection on 2026-10-25 found neither `idf.py` on PATH nor an
-`IDF_PATH` value. No SDK installation or firmware build was performed as part
-of selecting the version. The initial firmware scaffold is still pending.
+```sh
+PORTAL_IDF_VERSION=$(cat .esp-idf-version)
+. "$HOME/esp/esp-idf-$PORTAL_IDF_VERSION/export.sh"
+idf.py --version
+```
+
+Check that the reported version matches the pin before building; an older SDK
+may already be on PATH. If using a different SDK parent directory, adjust both
+installation and activation paths. When the pin changes, install that checkout
+and its matching tools before activating it.
+
+See the matching tag in [Espressif's releases](https://github.com/espressif/esp-idf/releases)
+for release notes. Host tests will use their own CMake build without requiring
+IDF (ADR-0017).
+
 
 ## Git hosting
 
