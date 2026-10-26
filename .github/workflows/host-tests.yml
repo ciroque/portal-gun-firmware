@@ -1,0 +1,38 @@
+name: Host tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # PR updates supersede earlier runs. Keep every main/manual run, including
+  # pending ones: a shared group permits only one pending run even without cancellation.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  host-tests:
+    name: Host tests (Linux)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Configure host tests
+        run: >-
+          cmake -S test -B build/host -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+
+      - name: Build host tests
+        run: cmake --build build/host --parallel "$(nproc)"
+
+      - name: Run host tests
+        run: ctest --test-dir build/host --output-on-failure --no-tests=error
