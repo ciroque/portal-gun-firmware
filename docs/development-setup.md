@@ -9,11 +9,17 @@ there is no project-specific reason to retain the previous patch version.
 This file records the pin; it does not automatically install or enforce the SDK.
 The firmware scaffold should check the SDK version during configuration.
 
-The target is `esp32s3`. See the official
-[ESP32-S3 installation guide](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/index.html)
-for prerequisites, selecting the documentation version that matches the pin.
-For a Git-based setup, start in this repository's root. The commands below
-install a separate SDK checkout under `~/esp`:
+The target is `esp32s3`. Start in this repository's root and print the exact
+installation-guide URL from the pin:
+
+```sh
+PORTAL_IDF_VERSION=$(cat .esp-idf-version)
+printf '%s\n' "https://docs.espressif.com/projects/esp-idf/en/$PORTAL_IDF_VERSION/esp32s3/get-started/index.html"
+```
+
+Open that URL for prerequisites. This avoids a moving `stable` or `latest`
+documentation link. For a Git-based setup, the commands below install a separate
+SDK checkout under `~/esp`, starting from the repository root:
 
 ```sh
 PORTAL_REPO_DIR=$(pwd)
@@ -27,6 +33,11 @@ cd "esp-idf-$PORTAL_IDF_VERSION"
 idf.py --version
 cd "$PORTAL_REPO_DIR"
 ```
+
+If the destination already contains a complete checkout of the pinned tag, skip
+`git clone` and continue with `cd`, installation, and activation. For a partial
+or uncertain checkout, stop and inspect it before continuing; an existing
+directory alone does not establish that the SDK is ready to use.
 
 Sourcing `export.sh` activates tools only in the current shell. In every new
 terminal, start from the repository root and activate the pinned checkout again:

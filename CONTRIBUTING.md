@@ -7,9 +7,7 @@ See [development setup](docs/development-setup.md) for the pinned ESP-IDF versio
 The repository is [ciroque/portal-gun-firmware](https://github.com/ciroque/portal-gun-firmware),
 with `main` as the default branch and
 `git@github.com:ciroque/portal-gun-firmware` as the `origin` fetch/push URL.
-The branch push and [PR #1](https://github.com/ciroque/portal-gun-firmware/pull/1)
-confirm repository write and PR creation access; branch protection remains
-unchecked. Open PRs through GitHub's web UI or authenticated `gh`.
+Open PRs through GitHub's web UI or authenticated `gh`.
 
 ## Branches and commits
 
