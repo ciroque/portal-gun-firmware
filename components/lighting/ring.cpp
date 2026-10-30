@@ -17,6 +17,7 @@ struct LedEncoder {
     rmt_symbol_word_t reset{};
 };
 
+// RMT encodes the GRB byte stream first, then appends one low reset/latch symbol.
 size_t encodeLed(rmt_encoder_t* base, rmt_channel_handle_t channel, const void* data,
                  size_t size, rmt_encode_state_t* result) {
     auto* encoder = reinterpret_cast<LedEncoder*>(base);

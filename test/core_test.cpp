@@ -5,6 +5,7 @@
 
 #include <vector>
 
+// Deterministic port doubles exercise timing, state transitions, and failure choices on the host.
 using namespace portal;
 
 struct TestLights : LightingPort {

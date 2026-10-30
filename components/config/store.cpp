@@ -7,6 +7,7 @@ SettingsStore::~SettingsStore() { if (handle_) nvs_close(handle_); }
 Settings SettingsStore::load() {
     Settings settings;
     auto error = nvs_flash_init();
+    // Only these documented format/capacity failures authorize resetting NVS.
     if (error == ESP_ERR_NVS_NO_FREE_PAGES || error == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_LOGW("config", "NVS format/capacity incompatible; resetting settings partition");
         error = nvs_flash_erase();

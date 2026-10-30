@@ -1,3 +1,4 @@
+# Compose the prop runtime from hardware adapters and the portable controller.
 idf_component_register(SRCS "main.cpp" REQUIRES controller platform config inputs lighting
     audio log esp_timer esp_hw_support)
 # IDF appends its own language flag after CMake's CXX_STANDARD flag. Override

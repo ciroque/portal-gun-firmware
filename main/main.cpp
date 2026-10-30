@@ -9,6 +9,7 @@
 #include "portal/ring.hpp"
 #include "portal/store.hpp"
 
+// Firmware composition root: bind hardware adapters, sample inputs, and tick the controller.
 namespace {
 class HardwareRandom : public portal::ShotRandom {
     bool failedShot() override {

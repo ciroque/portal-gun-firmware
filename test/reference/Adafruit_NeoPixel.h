@@ -1,4 +1,5 @@
 #pragma once
+// Minimal host fake: record rendered pixels and show() snapshots for the sketch oracle.
 #include <array>
 #include <cstdint>
 #include <vector>

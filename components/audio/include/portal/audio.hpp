@@ -9,16 +9,22 @@
 #include <atomic>
 
 namespace portal {
+/// Asynchronous I2S playback backend for the embedded mono WAV assets.
 class I2sAudio : public AudioPort {
 public:
     I2sAudio() = default;
     ~I2sAudio();
     I2sAudio(const I2sAudio&) = delete;
     I2sAudio& operator=(const I2sAudio&) = delete;
+    /// Configure I2S and start the dedicated playback worker.
     bool init();
+    /// Request one sound under a token; returns false when audio is unavailable.
     bool play(Sound sound, std::uint32_t token) override;
+    /// Request playback cancellation through the worker's command mailbox.
     void stop() override;
+    /// Check whether this token has completed or audio has failed safely.
     bool finished(std::uint32_t token) const override;
+    /// Return the validated WAV duration, or zero for an invalid/missing asset.
     std::uint32_t durationMs(Sound sound) const override;
 private:
     struct Command { Sound sound; std::uint32_t token; bool stop; };

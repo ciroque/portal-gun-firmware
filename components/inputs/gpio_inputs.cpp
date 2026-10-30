@@ -5,6 +5,7 @@
 
 namespace portal {
 namespace {
+// The order is shared with the controller's Button enum and preserves trigger priority.
 constexpr std::array<int, 4> pins_in_order{pins::Trigger, pins::ColorButton, pins::DirectionButton, pins::CurveButton};
 }
 bool GpioInputs::init() {

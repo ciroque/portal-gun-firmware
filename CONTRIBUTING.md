@@ -36,3 +36,10 @@ PR descriptions should explain the problem, resulting behavior, validation, and
 any material limitations. Reference relevant ADRs when they explain the change.
 Run checks appropriate to the change before requesting review; distinguish host
 tests and successful builds from hardware behavior that has actually been tested.
+
+## Comments
+
+Use concise API comments on public interfaces and explain non-obvious invariants,
+hardware contracts, or reasons for a choice near the relevant code. Avoid
+comments that only restate a line. Keep generated files, vendored code, binary
+assets, and the unchanged reference sketch free of project-added annotations.

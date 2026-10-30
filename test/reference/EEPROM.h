@@ -1,4 +1,5 @@
 #pragma once
+// In-memory EEPROM subset used only to compile the unchanged reference sketch.
 #include <array>
 #include <cstring>
 struct ReferenceEeprom {

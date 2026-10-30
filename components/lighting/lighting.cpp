@@ -1,6 +1,7 @@
 #include "portal/lighting.hpp"
 #include <cmath>
 
+// Pure frame generation keeps the original effects testable without board I/O.
 namespace portal {
 Palette palette(PortalColor color) {
     if (color == PortalColor::Blue)

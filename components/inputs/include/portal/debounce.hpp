@@ -7,6 +7,8 @@ namespace portal {
 enum class Button { Trigger, Color, Direction, Curve };
 class Debouncer {
 public:
+    /// Sample an active-low input and emit once after a stable press interval.
+    /// `released` is true at rest; elapsed time uses wrap-safe unsigned math.
     bool poll(bool released, std::uint32_t now) {
         if (released != last_reading_) changed_at_ = now;
         bool pressed = false;

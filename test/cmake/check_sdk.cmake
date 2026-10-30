@@ -1,3 +1,4 @@
+# Test adapter for both the release-pin check and the full SDK-checkout guard.
 cmake_minimum_required(VERSION 3.22)
 include("${PORTAL_ROOT}/cmake/CheckEspIdfVersion.cmake")
 if(PORTAL_CHECK_CHECKOUT)

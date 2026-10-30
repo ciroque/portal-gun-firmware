@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(portal_host_tests LANGUAGES CXX)
 
+# Build portable logic against the sketch oracle; keep ESP-IDF out of host tests.
 enable_testing()
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
