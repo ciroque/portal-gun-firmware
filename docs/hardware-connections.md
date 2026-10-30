@@ -125,3 +125,8 @@ electrical nets, and design checks. If the project needs a true circuit
 schematic, create it in a circuit-design tool such as KiCad, commit its source
 file, and export SVG for embedding here. Keep this GPIO table aligned with
 [ADR-0008](../adr/0008-gpio-allocation.md) as the quick pin lookup.
+
+Initial KiCad-format functional wiring maps for each subsystem are in
+[`docs/kicad/`](kicad/README.md). They communicate the present assignments and
+open decisions, but use illustrative graphics rather than electrical symbols
+and nets; they are not complete build schematics or ERC-checked designs.
