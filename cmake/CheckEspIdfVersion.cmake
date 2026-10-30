@@ -1,4 +1,5 @@
 # Kept independent of ESP-IDF so the configuration contract is host-testable.
+# Validate that the pin, active IDF_PATH version, and Git release tag agree.
 function(portal_check_esp_idf_version pin_file active_version reported_version)
     if(NOT EXISTS "${pin_file}")
         message(FATAL_ERROR "Missing ESP-IDF version pin: ${pin_file}")
@@ -17,6 +18,7 @@ function(portal_check_esp_idf_version pin_file active_version reported_version)
     endif()
 endfunction()
 
+# Verify both SDK provenance and the exact version from a checkout directory.
 function(portal_verify_esp_idf pin_file sdk_path git_executable)
     execute_process(
         COMMAND "${git_executable}" -C "${sdk_path}" describe --tags --dirty --always
@@ -38,6 +40,7 @@ function(portal_verify_esp_idf pin_file sdk_path git_executable)
         "${IDF_VERSION_MAJOR}.${IDF_VERSION_MINOR}.${IDF_VERSION_PATCH}" "${description}")
 endfunction()
 
+# Enforce the SDK at configure time and again before every build.
 function(portal_enforce_esp_idf_version pin_file sdk_path)
     find_package(Git REQUIRED)
     portal_verify_esp_idf("${pin_file}" "${sdk_path}" "${GIT_EXECUTABLE}")

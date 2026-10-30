@@ -1,3 +1,4 @@
+# Isolated fixture used to verify configure-time and build-time SDK checks.
 cmake_minimum_required(VERSION 3.22)
 include("${PORTAL_ROOT}/cmake/CheckEspIdfVersion.cmake")
 portal_enforce_esp_idf_version("${PORTAL_PIN}" "${PORTAL_SDK}")

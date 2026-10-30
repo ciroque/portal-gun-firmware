@@ -13,7 +13,10 @@ sys.argv[1:] = []
 
 
 class SdkVersionGuardTest(unittest.TestCase):
+    """Exercise version-string validation through the real CMake script."""
+
     def check_guard(self, pin, active="6.0.3", reported="v6.0.3"):
+        """Run the guard with a temporary pin and selected SDK version strings."""
         with tempfile.TemporaryDirectory(prefix="portal ${literal} ") as directory:
             work = Path(directory)
             pin_file = work / ('.esp-idf-"back\\slash' if os.name != "nt" else ".esp-idf-version")
@@ -27,9 +30,11 @@ class SdkVersionGuardTest(unittest.TestCase):
                 text=True, capture_output=True, timeout=30)
 
     def test_matching_release(self):
+        """Accept the pinned patch release with an exact clean tag."""
         self.assertEqual(self.check_guard("v6.0.3\n").returncode, 0)
 
     def test_other_patch_minor_and_major_are_rejected(self):
+        """Reject SDK versions that differ at any semver position."""
         for active in ("6.0.2", "6.1.3", "7.0.3"):
             with self.subTest(active=active):
                 result = self.check_guard("v6.0.3\n", active, "v" + active)
@@ -38,17 +43,20 @@ class SdkVersionGuardTest(unittest.TestCase):
                 self.assertIn(active, result.stderr)
 
     def test_prerelease_and_modified_checkout_are_rejected(self):
+        """Reject prerelease, commit-suffixed, and dirty SDK descriptions."""
         for reported in ("v6.0.3-rc1", "v6.0.3-1-gabcdef", "v6.0.3-dirty"):
             with self.subTest(reported=reported):
                 result = self.check_guard("v6.0.3", reported=reported)
                 self.assertNotEqual(result.returncode, 0)
 
     def test_missing_pin(self):
+        """Fail clearly when the project version pin is absent."""
         result = self.check_guard(None)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Missing ESP-IDF version pin", result.stderr)
 
     def test_malformed_pin(self):
+        """Reject malformed, incomplete, and multi-line version pins."""
         for pin in ("", "6.0.3", "v6.0", "v6.0.3-rc1", "v6.0.3\nv6.0.2"):
             with self.subTest(pin=pin):
                 result = self.check_guard(pin)
@@ -56,11 +64,15 @@ class SdkVersionGuardTest(unittest.TestCase):
                 self.assertIn("Invalid ESP-IDF version pin", result.stderr)
 
     def test_changed_pin_is_used(self):
+        """Read the pin at runtime instead of baking in a release number."""
         self.assertEqual(self.check_guard("v7.1.2", "7.1.2", "v7.1.2").returncode, 0)
 
 
 class SdkCheckoutGuardTest(unittest.TestCase):
+    """Exercise checkout cleanliness checks with isolated temporary Git repos."""
+
     def setUp(self):
+        """Create a tagged two-version SDK fixture for each test."""
         self.temporary = tempfile.TemporaryDirectory(prefix="portal sdk ")
         self.addCleanup(self.temporary.cleanup)
         self.work = Path(self.temporary.name)
@@ -82,23 +94,28 @@ class SdkCheckoutGuardTest(unittest.TestCase):
         self.git_run("tag", "v6.0.3")
 
     def git_run(self, *args):
+        """Run Git in the temporary SDK fixture and surface command failures."""
         return subprocess.run([self.git, "-C", str(self.sdk), *args],
                               check=True, text=True, capture_output=True, timeout=30)
 
     def write_version(self, patch):
+        """Set the CMake SDK version to the requested patch number."""
         self.version_file.write_text(
             f"set(IDF_VERSION_MAJOR 6)\nset(IDF_VERSION_MINOR 0)\nset(IDF_VERSION_PATCH {patch})\n")
 
     def commit(self, message):
+        """Commit the fixture with local identity and signing disabled."""
         self.git_run("add", ".")
         self.git_run("-c", "user.name=SDK test", "-c", "user.email=sdk-test@example.invalid",
                      "-c", "commit.gpgsign=false", "commit", "-qm", message)
 
     def definitions(self):
+        """Return CMake definitions shared by fixture configure invocations."""
         return [f"-DPORTAL_ROOT={Path(ROOT).resolve().as_posix()}",
                 f"-DPORTAL_PIN={self.pin.as_posix()}", f"-DPORTAL_SDK={self.sdk.as_posix()}"]
 
     def configure(self):
+        """Configure the isolated consumer project against the current SDK state."""
         self.build = self.work / "build"
         result = subprocess.run([CMAKE, "-S", str(Path(ROOT) / "test/cmake/sdk_guard_project"),
                                  "-B", str(self.build), *self.definitions()],
@@ -106,15 +123,18 @@ class SdkCheckoutGuardTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def build_result(self):
+        """Build without throwing so callers can assert guard failures."""
         return subprocess.run([CMAKE, "--build", str(self.build), "--config", "Debug"],
                               text=True, capture_output=True, timeout=30)
 
     def test_clean_checkout_with_spaces_in_paths_builds(self):
+        """Allow a clean pinned checkout even when filesystem paths contain spaces."""
         self.configure()
         result = self.build_result()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_changed_checkout_fails_without_explicit_reconfiguration(self):
+        """Detect unstaged edits, staged edits, and changed tags during the build."""
         for change in ("unstaged", "staged", "tag"):
             with self.subTest(change=change):
                 self.git_run("checkout", "-q", "v6.0.3")
@@ -133,6 +153,7 @@ class SdkCheckoutGuardTest(unittest.TestCase):
                 self.git_run("restore", "--source=v6.0.3", "--staged", "--worktree", ".")
 
     def test_git_failure_includes_original_diagnostic(self):
+        """Preserve Git's diagnostic when the SDK path is not a repository."""
         non_repository = self.work / "not a repository"
         non_repository.mkdir()
         command = [CMAKE, *self.definitions(), f"-DPORTAL_SDK={non_repository.as_posix()}",

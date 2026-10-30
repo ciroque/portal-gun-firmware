@@ -1,6 +1,7 @@
 #include "portal/controller.hpp"
 #include <algorithm>
 
+// Own behavior and timing here; hardware adapters are injected through the ports.
 namespace portal {
 const char* stateName(State state) {
     switch (state) {

@@ -1,3 +1,4 @@
+# Project entry point: require the pinned ESP-IDF checkout before IDF configures.
 cmake_minimum_required(VERSION 3.22)
 
 if(NOT DEFINED ENV{IDF_PATH} OR "$ENV{IDF_PATH}" STREQUAL "")

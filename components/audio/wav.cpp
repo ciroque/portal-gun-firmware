@@ -4,7 +4,9 @@
 
 namespace portal {
 namespace {
+// Read RIFF fields bytewise so parsing does not depend on host alignment or endianness.
 std::uint16_t u16(const std::uint8_t* p) { return p[0] | (std::uint16_t{p[1]} << 8); }
+/// Decode a four-byte little-endian RIFF length or sample-rate field.
 std::uint32_t u32(const std::uint8_t* p) {
     return p[0] | (std::uint32_t{p[1]} << 8) | (std::uint32_t{p[2]} << 16) | (std::uint32_t{p[3]} << 24);
 }
@@ -17,6 +19,7 @@ std::optional<WavView> parseWav(const std::uint8_t* bytes, std::size_t size) {
     const std::size_t end = static_cast<std::size_t>(riff_size) + 8;
     bool format = false;
     WavView view;
+    // Walk chunk sizes and even-byte padding instead of assuming a 44-byte WAV header.
     for (std::size_t offset = 12; offset < end;) {
         if (end - offset < 8) return std::nullopt;
         const auto* header = bytes + offset;

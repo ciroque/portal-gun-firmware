@@ -5,7 +5,9 @@
 #include "esp_timer.h"
 #include <algorithm>
 
+// This adapter owns I2S and its worker so controller calls never block on playback.
 namespace {
+// Keep this array order aligned with Sound and the embedded WAVs in this component's CMake file.
 extern const std::uint8_t startup_start[] asm("_binary_portalgun_powerup1_wav_start");
 extern const std::uint8_t startup_end[] asm("_binary_portalgun_powerup1_wav_end");
 extern const std::uint8_t blue_start[] asm("_binary_portalgun_shoot_blue1_wav_start");
@@ -15,6 +17,7 @@ extern const std::uint8_t orange_end[] asm("_binary_portalgun_shoot_red1_wav_end
 extern const std::uint8_t invalid_start[] asm("_binary_portal_invalid_surface3_wav_start");
 extern const std::uint8_t invalid_end[] asm("_binary_portal_invalid_surface3_wav_end");
 constexpr const char* names[] = {"startup", "fire_blue", "fire_orange", "invalid_surface"};
+/// Convert the monotonic ESP timer to the controller's millisecond clock.
 std::uint32_t nowMs() { return static_cast<std::uint32_t>(esp_timer_get_time() / 1000); }
 }
 
@@ -60,6 +63,7 @@ bool I2sAudio::init() {
         if (channel_) { i2s_del_channel(channel_); channel_ = nullptr; }
         return false;
     }
+    // A one-command mailbox lets a new play/stop request supersede stale intent.
     commands_ = xQueueCreate(1, sizeof(Command));
     if (!commands_ || xTaskCreate(taskEntry, "portal_audio", 4096, this, 5, &task_) != pdPASS) {
         ESP_LOGW("audio", "Playback task unavailable; controller will continue silently");
@@ -118,6 +122,7 @@ void I2sAudio::run() {
         Command command{};
         const auto wait = active ? TickType_t{0} : draining ? TickType_t{1} : portMAX_DELAY;
         if (xQueueReceive(commands_, &command, wait) == pdTRUE) {
+            // Avoid a silent DMA-ring delay when starting from a truly idle channel.
             const bool replace_playback = active || draining;
             if (replace_playback) completed_.store(current.token);
             active = false; draining = false;

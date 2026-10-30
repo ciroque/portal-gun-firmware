@@ -9,6 +9,7 @@ namespace {
 constexpr std::array<int, 3> charge_pins{portal::pins::ChargeLed1, portal::pins::ChargeLed2, portal::pins::ChargeLed3};
 constexpr std::uint32_t RmtResolutionHz = 20000000;
 
+/// Composite byte and copy encoders for a WS2812 payload plus its reset interval.
 struct LedEncoder {
     rmt_encoder_t base{};
     rmt_encoder_handle_t bytes = nullptr;
@@ -17,6 +18,8 @@ struct LedEncoder {
     rmt_symbol_word_t reset{};
 };
 
+// RMT encodes the GRB byte stream first, then appends one low reset/latch symbol.
+/// Encode one stage per call and yield whenever RMT symbol memory fills.
 size_t encodeLed(rmt_encoder_t* base, rmt_channel_handle_t channel, const void* data,
                  size_t size, rmt_encode_state_t* result) {
     auto* encoder = reinterpret_cast<LedEncoder*>(base);
@@ -48,6 +51,7 @@ done:
     return symbols;
 }
 
+/// Return both child encoders and the wrapper to their initial state.
 esp_err_t resetLed(rmt_encoder_t* base) {
     auto* encoder = reinterpret_cast<LedEncoder*>(base);
     rmt_encoder_reset(encoder->bytes);
@@ -56,6 +60,7 @@ esp_err_t resetLed(rmt_encoder_t* base) {
     return ESP_OK;
 }
 
+/// Release the wrapper and its child encoders.
 esp_err_t deleteLed(rmt_encoder_t* base) {
     auto* encoder = reinterpret_cast<LedEncoder*>(base);
     if (encoder->bytes) rmt_del_encoder(encoder->bytes);
@@ -64,6 +69,7 @@ esp_err_t deleteLed(rmt_encoder_t* base) {
     return ESP_OK;
 }
 
+/// Create the MSB-first WS2812 encoder with a 300 us low latch symbol.
 esp_err_t newLedEncoder(rmt_encoder_handle_t* result) {
     auto* encoder = static_cast<LedEncoder*>(rmt_alloc_encoder_mem(sizeof(LedEncoder)));
     if (!encoder) return ESP_ERR_NO_MEM;

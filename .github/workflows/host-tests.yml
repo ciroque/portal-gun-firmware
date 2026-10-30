@@ -1,3 +1,4 @@
+# Run the portable suites on PRs and main without fetching project write credentials.
 name: Host tests
 
 on:

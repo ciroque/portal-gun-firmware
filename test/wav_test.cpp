@@ -5,7 +5,9 @@
 #include <iterator>
 #include <vector>
 
+// Validate the production parser against embedded assets and malformed RIFF inputs.
 namespace {
+/// Load one generated playback asset for parser checks.
 std::vector<std::uint8_t> readAsset(const char* name) {
     const auto path = std::filesystem::path(__FILE__).parent_path().parent_path() / "assets/audio" / name;
     std::ifstream file(path, std::ios::binary);

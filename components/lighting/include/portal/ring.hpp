@@ -4,13 +4,20 @@
 #include "driver/rmt_encoder.h"
 
 namespace portal {
+/// ESP-IDF RMT/GPIO implementation of the lighting output boundary.
 class RingLights : public LightingPort {
 public:
+    /// Construct without touching hardware; call init() after platform startup.
     RingLights() = default;
+    /// Disable and release the RMT channel and encoder.
     ~RingLights();
+    /// Hardware handles and the transmit buffer are uniquely owned by this adapter.
     RingLights(const RingLights&) = delete;
+    /// Hardware handles and the transmit buffer are not assignable.
     RingLights& operator=(const RingLights&) = delete;
+    /// Configure the WS2812 transmitter and charge indicator outputs.
     bool init();
+    /// Send changed frames and update charge outputs; failed RMT frames are retried later.
     void present(const Frame& frame, unsigned charge_stage) override;
 private:
     rmt_channel_handle_t channel_ = nullptr;

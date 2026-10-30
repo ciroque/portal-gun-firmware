@@ -9,14 +9,20 @@
 constexpr bool HIGH = true, LOW = false;
 constexpr int INPUT_PULLUP = 0;
 static std::uint32_t reference_now = 0;
+// Arduino clock stubs share one manually advanced time base for deterministic timelines.
 unsigned long millis() { return reference_now; }
+/// Advance reference time without waiting on the host process.
 void delay(unsigned long duration) { reference_now += duration; }
+/// Hardware setup is intentionally inert in the host oracle.
 void pinMode(int, int) {}
+/// Keep the pull-up inputs released unless a test explicitly changes the stub.
 bool digitalRead(int) { return HIGH; }
+/// Match Arduino's integer interpolation used by the original sketch.
 long map(long value, long low, long high, long out_low, long out_high) {
     return (value - low) * (out_high - out_low) / (high - low) + out_low;
 }
 namespace reference {
+// Declare sketch functions before including firmware.ino inside this namespace.
 struct RGB;
 void loadConfig(); bool isConfigValid(); void saveConfig(); void updateButtons();
 void fire(); void togglePortalColor(); void toggleDischargeDirection(); void toggleAccelerationCurve();
@@ -28,6 +34,7 @@ void fillRing(RGB); void fillRingNoShow(RGB);
 }
 
 namespace {
+/// Compare every logical RGB pixel against one frame emitted by the sketch fake.
 void compare(const portal::Frame& frame, const Adafruit_NeoPixel::Pixels& expected) {
     for (std::size_t i = 0; i < frame.size(); ++i) {
         CAPTURE(i);
@@ -35,6 +42,7 @@ void compare(const portal::Frame& frame, const Adafruit_NeoPixel::Pixels& expect
         CHECK(((std::uint32_t{color.r} << 16) | (std::uint32_t{color.g} << 8) | color.b) == expected[i]);
     }
 }
+/// Reset all reference-sketch globals so each oracle case starts from idle.
 void resetReference(int color, int curve = 0, int direction = -1) {
     reference_now = 0;
     reference::portalColor = static_cast<reference::PortalColor>(color);
@@ -46,17 +54,28 @@ void resetReference(int color, int curve = 0, int direction = -1) {
     reference::spinStep = 0; reference::dischargeStep = 0; reference::decayLevel = 220;
     reference::ring.clear(); reference::ring.shown.clear(); reference::setPortalPalette();
 }
+/// Capture production frame requests while preserving the controller's port interface.
 struct OracleLights : portal::LightingPort {
     portal::Frame frame{};
+    /// Retain the latest frame for comparison with the sketch renderer.
     void present(const portal::Frame& value, unsigned) override { frame = value; }
 };
+/// Model unavailable audio so reference-timeline tests stay independent of hardware.
 struct SilentAudio : portal::AudioPort {
+    /// Always report that no playback was started.
     bool play(portal::Sound, std::uint32_t) override { return false; }
+    /// There is no active playback to cancel.
     void stop() override {}
+    /// Unavailable playback is already complete from the controller's perspective.
     bool finished(std::uint32_t) const override { return true; }
+    /// Unavailable assets have no duration.
     std::uint32_t durationMs(portal::Sound) const override { return 0; }
 };
-struct SuccessfulShot : portal::ShotRandom { bool failedShot() override { return false; } };
+/// Select normal firing for comparisons against the original successful-shot path.
+struct SuccessfulShot : portal::ShotRandom {
+    /// Keep every reference timeline on the normal firing path.
+    bool failedShot() override { return false; }
+};
 }
 
 TEST_CASE("all curve delays match the original sketch") {
