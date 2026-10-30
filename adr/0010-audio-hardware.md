@@ -33,16 +33,11 @@ Start playback at low volume and establish a clean maximum level on the actual
 speaker. The advertised 3.2 W into 4 Ω at 5 V is specified at 10% THD, not a
 clean-output target or permission to exceed the speaker's rating.
 
-## Procurement and remaining integration
+## Remaining integration
 
-- Speaker: available, per owner; use one from the two-piece pack. Exact dimensions
-  and connector pin markings have not been independently verified.
-- Amplifier: **in the owner's cart, not ordered**. Purchasing is on hold until
-  the full project parts list is established.
-- Retain the speaker's JST connection. The owner has JST connectors available;
-  exact mating parts, pin assignments, and wiring to the amplifier's screw
-  terminals will be established later. No additional connector purchase is
-  selected at this stage.
+- Use one Shutao 4 Ω / 3 W speaker from the JST-PH2.0 pair.
+- Retain the JST connection. Exact mating parts, pin assignments, and wiring to
+  the amplifier's screw terminals will be established during assembly.
 - Account for power/signal wiring, mounting clearance, and speaker mounting or
   a suitable acoustic chamber. No chamber design has been selected.
 

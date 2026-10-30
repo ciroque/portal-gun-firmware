@@ -17,7 +17,7 @@ architecture proposal or hardware validation.
 | [0006](0006-synchronized-lighting-and-muzzle.md) | Synchronize charge indicators and muzzle with firing phases | Accepted; muzzle portion superseded by 0009 |
 | [0007](0007-native-audio-and-standalone-operation.md) | Prefer native audio and keep operation independent of networking | Accepted |
 | [0008](0008-gpio-allocation.md) | Allocate GPIOs while preserving programming and debug interfaces | Accepted; board photos checked |
-| [0009](0009-defer-muzzle-emitter.md) | Defer muzzle emitter; retain driver selection and procurement history | Accepted |
+| [0009](0009-defer-muzzle-emitter.md) | Defer muzzle emitter; retain driver selection and deferral details | Accepted |
 | [0010](0010-audio-hardware.md) | Use Adafruit #3006 with one Shutao 4 Ω / 3 W speaker | Accepted |
 | [0011](0011-power-budget.md) | Budget initial-build power and validate the candidate supply | Proposed |
 | [0012](0012-charge-led-timing.md) | Space charge LED transitions across the spin-up duration | Accepted |

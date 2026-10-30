@@ -49,9 +49,9 @@ electrical connections, use the tables below and the referenced ADRs.
 | IO10 | 10 | Charge indicator 2 | Control output; LED driver/current-limit circuit must be established before wiring | Assigned; circuit TBD |
 | IO11 | 11 | Charge indicator 3 | Control output; LED driver/current-limit circuit must be established before wiring | Assigned; circuit TBD |
 | IO12 | 12 | Muzzle emitter enable | Reserved; leave unconnected and unconfigured in the initial build | Deferred by ADR-0009 |
-| IO15 | 15 | MAX98357A BCLK | I2S bit clock | Planned; amplifier not ordered |
-| IO16 | 16 | MAX98357A LRC/LRCLK | I2S word select | Planned; amplifier not ordered |
-| IO17 | 17 | MAX98357A DIN | I2S data out from ESP32 | Planned; amplifier not ordered |
+| IO15 | 15 | MAX98357A BCLK | I2S bit clock | Assigned |
+| IO16 | 16 | MAX98357A LRC/LRCLK | I2S word select | Assigned |
+| IO17 | 17 | MAX98357A DIN | I2S data out from ESP32 | Assigned |
 
 Do not connect bare LEDs directly to GPIO9–11. The LED current limiting and
 driver circuit is not specified here. The RGB LED on the dev board is GPIO48;
@@ -76,9 +76,8 @@ power the ring from the ESP32 GPIO or 3.3 V pin.
 
 ### Audio
 
-The selected audio path is one Shutao 4 Ω / 3 W speaker driven by an Adafruit
-#3006 MAX98357A breakout. The breakout is in the owner's cart and has not been
-ordered. When assembled, connect:
+The audio path uses one Shutao 4 Ω / 3 W speaker driven by an Adafruit #3006
+MAX98357A breakout. Connect:
 
 | MAX98357A board | Connect to |
 | --- | --- |

@@ -16,9 +16,9 @@ separate pages:
 The pages use graphical blocks and lines, not KiCad electrical symbols, pins,
 or electrical nets. They are therefore **not netlist-generating or ERC-checked
 schematics**, and the connecting lines are illustrative. In particular, the
-charge LED circuit is not designed, the audio amplifier has not been ordered,
-and the power system still needs combined-load validation. Do not build from
-these pages as complete electrical instructions.
+charge LED circuit is not designed, and the power system still needs
+combined-load validation. Do not build from these pages as complete electrical
+instructions.
 
 The GPIO assignments and their status are authoritative in
 [hardware-connections.md](../hardware-connections.md); refer to the linked ADRs

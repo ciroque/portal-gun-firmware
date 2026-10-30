@@ -12,7 +12,7 @@
   (lib_symbols)
   (text "FUNCTIONAL WIRING MAP — NOT AN ERC-VALIDATED ELECTRICAL SCHEMATIC" (at 16 18 0) (effects (font (size 2.0 2.0)) (justify left bottom)) (uuid 8d1570fc-dc05-4907-9429-7a9c11841121))
   (text "I2S audio" (at 16 28 0) (effects (font (size 3.0 3.0)) (justify left bottom)) (uuid 10936714-030a-4df8-911d-ba23dcaf54b3))
-  (text "COMPONENTS SELECTED — MAX98357A BREAKOUT IS NOT YET ORDERED OR WIRED" (at 16 38 0) (effects (font (size 1.8 1.8)) (justify left bottom)) (uuid fa3ce6d0-3ee6-4959-9c9f-89c093fbadc9))
+  (text "SELECTED AUDIO HARDWARE AND SIGNAL ASSIGNMENTS — ASSEMBLY WIRING TO CONFIRM" (at 16 38 0) (effects (font (size 1.8 1.8)) (justify left bottom)) (uuid fa3ce6d0-3ee6-4959-9c9f-89c093fbadc9))
   (polyline (pts (xy 20 52) (xy 94 52) (xy 94 95) (xy 20 95) (xy 20 52)) (stroke (width 0.35) (type default)) (fill (type none)) (uuid 0f2b5241-00ea-4d31-8ed5-e2f34666e91f))
   (text "ESP32-S3 DEV BOARD" (at 23 58 0) (effects (font (size 2.0 2.0)) (justify left bottom)) (uuid a60f8b38-7f8b-4b3c-a372-d54fd8c1b7d6))
   (text "IO15 / GPIO15  BCLK" (at 23 65 0) (effects (font (size 1.65 1.65)) (justify left bottom)) (uuid f9fe302e-3f60-45a6-a827-b959ca98c806))
