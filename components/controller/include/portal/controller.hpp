@@ -12,6 +12,7 @@ const char* stateName(State state);
 /// Injected randomness keeps failed-shot selection deterministic in host tests.
 class ShotRandom {
 public:
+    /// Allow a test or hardware source to be destroyed through this interface.
     virtual ~ShotRandom() = default;
     /// Return whether this trigger press selects the configured failed-shot event.
     virtual bool failedShot() = 0;
@@ -35,11 +36,17 @@ public:
     /// Consume the settings-dirty flag after an accepted setting change.
     bool takeSettingsChanged();
 private:
+    /// Visual setting indicators that can replace one another while idle.
     enum class Feedback { None, Curve, Color };
+    /// Store the frame and synchronously pass it to the lighting adapter.
     void present(const Frame& frame);
+    /// Start a sound and record its completion token and timeout.
     void play(Sound sound, std::uint32_t now);
+    /// Advance the idle animation when its frame deadline has elapsed.
     void idle(std::uint32_t now);
+    /// Reset idle animation timing after a firing sequence.
     void resetIdle(std::uint32_t last_frame);
+    /// Leave an effect only after both its visual and audio portions complete.
     void visualComplete(std::uint32_t now);
     LightingPort& lights_;
     AudioPort& audio_;

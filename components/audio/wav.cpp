@@ -6,6 +6,7 @@ namespace portal {
 namespace {
 // Read RIFF fields bytewise so parsing does not depend on host alignment or endianness.
 std::uint16_t u16(const std::uint8_t* p) { return p[0] | (std::uint16_t{p[1]} << 8); }
+/// Decode a four-byte little-endian RIFF length or sample-rate field.
 std::uint32_t u32(const std::uint8_t* p) {
     return p[0] | (std::uint32_t{p[1]} << 8) | (std::uint32_t{p[2]} << 16) | (std::uint32_t{p[3]} << 24);
 }

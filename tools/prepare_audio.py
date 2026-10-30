@@ -16,6 +16,7 @@ ACTIVE_SOUNDS = (
 
 
 def main():
+    """Convert the selected original recordings to embedded mono PCM assets."""
     destination = ROOT / "assets" / "audio"
     destination.mkdir(parents=True, exist_ok=True)
     for name in ACTIVE_SOUNDS:

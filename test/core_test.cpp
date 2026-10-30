@@ -11,31 +11,41 @@ using namespace portal;
 struct TestLights : LightingPort {
     Frame frame{};
     unsigned charge = 0;
+    /// Capture the last requested frame and indicator stage without board I/O.
     void present(const Frame& value, unsigned stage) override { frame = value; charge = stage; }
 };
+/// Controllable audio fake that records tokens and played events.
 struct TestAudio : AudioPort {
     bool available = true;
     bool done = false;
     int stops = 0;
     std::uint32_t id = 0;
     std::vector<Sound> played;
+    /// Record a request and report whether the fake audio backend is available.
     bool play(Sound sound, std::uint32_t token) override {
         played.push_back(sound); id = token; done = false; return available;
     }
+    /// Count cancellation requests made by the controller.
     void stop() override { ++stops; }
+    /// Complete only the most recently requested token when the test permits it.
     bool finished(std::uint32_t token) const override { return done && token == id; }
+    /// Use a stable test duration so timeout cases remain deterministic.
     std::uint32_t durationMs(Sound) const override { return 1000; }
 };
+/// Scripted random source for normal and failed-shot paths.
 struct TestRandom : ShotRandom {
     bool fail = false;
     int calls = 0;
+    /// Count calls and return the test-selected outcome.
     bool failedShot() override { ++calls; return fail; }
 };
+/// Bundle deterministic test adapters with a started controller.
 struct Rig {
     TestLights lights;
     TestAudio audio;
     TestRandom random;
     Controller controller{lights, audio, random};
+    /// Start at time zero so each case can choose its own later deadlines.
     Rig() { controller.begin(0); }
 };
 

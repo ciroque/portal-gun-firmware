@@ -11,7 +11,9 @@
 
 // Firmware composition root: bind hardware adapters, sample inputs, and tick the controller.
 namespace {
+/// Production source of the five-percent failed-shot event.
 class HardwareRandom : public portal::ShotRandom {
+    /// Reject the modulo-bias tail before mapping entropy to a percentage.
     bool failedShot() override {
         std::uint32_t value;
         do { value = esp_random(); } while (value >= UINT32_MAX - UINT32_MAX % 100);
@@ -20,6 +22,7 @@ class HardwareRandom : public portal::ShotRandom {
 };
 }
 
+/// ESP-IDF application entry point; owns long-lived adapters for the main loop.
 extern "C" void app_main() {
     static portal::SettingsStore store;
     static portal::RingLights lights;

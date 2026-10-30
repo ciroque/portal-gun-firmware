@@ -17,6 +17,7 @@ extern const std::uint8_t orange_end[] asm("_binary_portalgun_shoot_red1_wav_end
 extern const std::uint8_t invalid_start[] asm("_binary_portal_invalid_surface3_wav_start");
 extern const std::uint8_t invalid_end[] asm("_binary_portal_invalid_surface3_wav_end");
 constexpr const char* names[] = {"startup", "fire_blue", "fire_orange", "invalid_surface"};
+/// Convert the monotonic ESP timer to the controller's millisecond clock.
 std::uint32_t nowMs() { return static_cast<std::uint32_t>(esp_timer_get_time() / 1000); }
 }
 

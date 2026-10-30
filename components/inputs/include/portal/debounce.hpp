@@ -5,6 +5,7 @@
 namespace portal {
 // Order deliberately matches the sketch: a simultaneous trigger wins over settings.
 enum class Button { Trigger, Color, Direction, Curve };
+/// Convert sampled active-low levels into one event per debounced press.
 class Debouncer {
 public:
     /// Sample an active-low input and emit once after a stable press interval.

@@ -39,7 +39,8 @@ tests and successful builds from hardware behavior that has actually been tested
 
 ## Comments
 
-Use concise API comments on public interfaces and explain non-obvious invariants,
-hardware contracts, or reasons for a choice near the relevant code. Avoid
+Use concise Doxygen comments on C++ class, struct, and function declarations;
+use Python docstrings on modules, classes, and functions. Explain behavior,
+non-obvious invariants, hardware contracts, and reasons for a choice. Avoid
 comments that only restate a line. Keep generated files, vendored code, binary
 assets, and the unchanged reference sketch free of project-added annotations.

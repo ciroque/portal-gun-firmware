@@ -8,6 +8,7 @@ enum class Sound { Startup, FireBlue, FireOrange, InvalidSurface };
 /// Asynchronous audio contract; tokens identify playback completion/cancellation.
 class AudioPort {
 public:
+    /// Allow adapters to be destroyed through this interface.
     virtual ~AudioPort() = default;
     /// Queue or start a sound; false means playback is unavailable.
     virtual bool play(Sound sound, std::uint32_t token) = 0;
