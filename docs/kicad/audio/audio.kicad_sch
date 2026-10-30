@@ -1,0 +1,757 @@
+(kicad_sch
+ (version 20250114) (generator "eeschema") (generator_version "9.0")
+ (uuid "ce4a2cb8-cf11-4c0d-9f85-5292a3986b47") (paper "A4")
+ (title_block (title "Portal Gun — I2S Audio") (rev "1.0") (comment 1 "Electrical wiring schematic; verify against selected modules before assembly."))
+ (lib_symbols (symbol "Connector_Generic:Conn_01x04"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "J"
+			(at 0 5.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04"
+			(at 0 -7.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(symbol "Conn_01x04_1_1"
+			(rectangle
+				(start -1.27 3.81)
+				(end 1.27 -6.35)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 2.667)
+				(end 0 2.413)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -4.953)
+				(end 0 -5.207)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 2.54 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -5.08 0)
+				(length 3.81)
+				(name "Pin_4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+(symbol "Connector_Generic:Conn_01x05"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "J"
+			(at 0 7.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x05"
+			(at 0 -7.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(symbol "Conn_01x05_1_1"
+			(rectangle
+				(start -1.27 6.35)
+				(end 1.27 -6.35)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 5.207)
+				(end 0 4.953)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 2.667)
+				(end 0 2.413)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -4.953)
+				(end 0 -5.207)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 5.08 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 2.54 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -5.08 0)
+				(length 3.81)
+				(name "Pin_5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+(symbol "Connector_Generic:Conn_01x02"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "J"
+			(at 0 2.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x02"
+			(at 0 -5.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(symbol "Conn_01x02_1_1"
+			(rectangle
+				(start -1.27 1.27)
+				(end 1.27 -3.81)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+(symbol "Device:Speaker"
+		(pin_names
+			(offset 0)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "LS"
+			(at 1.27 5.715 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "Speaker"
+			(at 1.27 3.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 -5.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at -0.254 -1.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Speaker"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_keywords" "speaker sound"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(symbol "Speaker_0_0"
+			(rectangle
+				(start -2.54 1.27)
+				(end 1.016 -3.81)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy 1.016 1.27) (xy 3.556 3.81) (xy 3.556 -6.35) (xy 1.016 -3.81)
+				)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "Speaker_1_1"
+			(pin input line
+				(at -5.08 0 0)
+				(length 2.54)
+				(name "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at -5.08 -2.54 0)
+				(length 2.54)
+				(name "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	))
+ (symbol (lib_id "Connector_Generic:Conn_01x04") (at 35.56 85.09 0) (unit 1)
+ (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+ (uuid "7befad40-7e76-4d7b-ae53-c7961eb9bf50") (property "Reference" "J1" (at 35.5600 73.0900 0) (effects (font (size 1.27 1.27)))) (property "Value" "ESP32-S3" (at 35.5600 75.0900 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 35.5600 85.0900 0) (effects (font (size 1.27 1.27)) (hide yes))) (property "Datasheet" "~" (at 35.5600 85.0900 0) (effects (font (size 1.27 1.27)) (hide yes))) (pin "1" (uuid "7c4bbebe-d840-4d9d-a7ee-97e40f15a4a6")) (pin "2" (uuid "52d3a226-8260-41ef-823f-1480209b3804")) (pin "3" (uuid "d808a99d-afba-49e9-b5cc-d09c618d4bb3")) (pin "4" (uuid "7faed107-75bd-41f9-abd5-c125d9e559c7"))
+ (instances (project "audio" (path "/ce4a2cb8-cf11-4c0d-9f85-5292a3986b47" (reference "J1") (unit 1)))) )
+(wire (pts (xy 30.4800 82.5500) (xy 25.4000 82.5500)) (stroke (width 0) (type default)) (uuid "67218db6-1b62-489a-b05d-69e5d52e8799"))
+(label "BCLK" (at 25.4000 82.5500 180.0) (effects (font (size 1.27 1.27))) (uuid "4d24895c-ef70-46bc-bcbb-e3088ec4e7d4"))
+(wire (pts (xy 30.4800 85.0900) (xy 25.4000 85.0900)) (stroke (width 0) (type default)) (uuid "ec761f00-459f-4ad9-951f-e01a5057d3f8"))
+(label "LRCLK" (at 25.4000 85.0900 180.0) (effects (font (size 1.27 1.27))) (uuid "afdd70a1-02cb-4501-96ff-7b4e0feb2059"))
+(wire (pts (xy 30.4800 87.6300) (xy 25.4000 87.6300)) (stroke (width 0) (type default)) (uuid "fe38037e-a8ca-4cbf-8342-265bffbc42cc"))
+(label "DATA" (at 25.4000 87.6300 180.0) (effects (font (size 1.27 1.27))) (uuid "6b96146e-a062-4dc8-83da-49ccd1f78452"))
+(wire (pts (xy 30.4800 90.1700) (xy 25.4000 90.1700)) (stroke (width 0) (type default)) (uuid "dc064cd2-1135-441d-87cc-0d294562a4fe"))
+(label "GND" (at 25.4000 90.1700 180.0) (effects (font (size 1.27 1.27))) (uuid "c5efc309-c541-449c-b74d-91df44d625a1"))
+(symbol (lib_id "Connector_Generic:Conn_01x05") (at 129.54 85.09 0) (unit 1)
+ (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+ (uuid "c3232b99-4fc5-4569-b4b5-5b0111dff516") (property "Reference" "J2" (at 129.5400 73.0900 0) (effects (font (size 1.27 1.27)))) (property "Value" "MAX98357A #3006" (at 129.5400 75.0900 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 129.5400 85.0900 0) (effects (font (size 1.27 1.27)) (hide yes))) (property "Datasheet" "~" (at 129.5400 85.0900 0) (effects (font (size 1.27 1.27)) (hide yes))) (pin "1" (uuid "3d245866-c306-4c46-888a-49e1882a83bd")) (pin "2" (uuid "318f4b72-3618-4ba1-8654-1fad601f20d4")) (pin "3" (uuid "cedceb4c-3545-4224-9a3e-2ddb394b0c50")) (pin "4" (uuid "7972fee7-b912-4cc3-a34f-0f4c12ce72a9")) (pin "5" (uuid "438ea2f0-9616-4e56-86f7-2d6de261951c"))
+ (instances (project "audio" (path "/ce4a2cb8-cf11-4c0d-9f85-5292a3986b47" (reference "J2") (unit 1)))) )
+(wire (pts (xy 124.4600 80.0100) (xy 119.3800 80.0100)) (stroke (width 0) (type default)) (uuid "6142fe47-fbe6-49eb-b17c-c04add661691"))
+(label "BCLK" (at 119.3800 80.0100 180.0) (effects (font (size 1.27 1.27))) (uuid "ace88098-c216-43a7-acab-7048c55855f8"))
+(wire (pts (xy 124.4600 82.5500) (xy 119.3800 82.5500)) (stroke (width 0) (type default)) (uuid "7fc0df3c-217c-4dee-bf92-5fe5a2f94fbd"))
+(label "LRCLK" (at 119.3800 82.5500 180.0) (effects (font (size 1.27 1.27))) (uuid "e57b51ce-d22f-40f7-8cea-538bbd011cae"))
+(wire (pts (xy 124.4600 85.0900) (xy 119.3800 85.0900)) (stroke (width 0) (type default)) (uuid "c7904762-724d-4041-ac53-4fd1951f250a"))
+(label "DATA" (at 119.3800 85.0900 180.0) (effects (font (size 1.27 1.27))) (uuid "a7e4bb58-094a-47e3-a289-904605686b11"))
+(wire (pts (xy 124.4600 87.6300) (xy 119.3800 87.6300)) (stroke (width 0) (type default)) (uuid "f665e4c5-8e1c-424f-873b-12b5e28333f0"))
+(label "+5V" (at 119.3800 87.6300 180.0) (effects (font (size 1.27 1.27))) (uuid "db91b6d9-4ee3-40f5-8b09-031cb8ecd244"))
+(wire (pts (xy 124.4600 90.1700) (xy 119.3800 90.1700)) (stroke (width 0) (type default)) (uuid "2dbda266-ef92-4bf3-957b-eea81a4b2cac"))
+(label "GND" (at 119.3800 90.1700 180.0) (effects (font (size 1.27 1.27))) (uuid "07838241-09c8-4700-9540-8589e7bfd2a3"))
+(symbol (lib_id "Connector_Generic:Conn_01x02") (at 219.71 85.09 0) (unit 1)
+ (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+ (uuid "7b53c1bd-a927-44f1-b750-d5c9d884c9cb") (property "Reference" "J3" (at 219.7100 73.0900 0) (effects (font (size 1.27 1.27)))) (property "Value" "AMP OUT" (at 219.7100 75.0900 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 219.7100 85.0900 0) (effects (font (size 1.27 1.27)) (hide yes))) (property "Datasheet" "~" (at 219.7100 85.0900 0) (effects (font (size 1.27 1.27)) (hide yes))) (pin "1" (uuid "3253c5c1-3edb-4bc7-9957-855d97890cab")) (pin "2" (uuid "f6b251bb-4758-4a10-b0a4-854626921eb2"))
+ (instances (project "audio" (path "/ce4a2cb8-cf11-4c0d-9f85-5292a3986b47" (reference "J3") (unit 1)))) )
+(wire (pts (xy 214.6300 85.0900) (xy 209.5500 85.0900)) (stroke (width 0) (type default)) (uuid "47908ff3-ddc7-42ff-963a-400f042b0573"))
+(label "SPK_P" (at 209.5500 85.0900 180.0) (effects (font (size 1.27 1.27))) (uuid "a7de4dd9-35ef-47fc-b2d2-a8cb98ddf264"))
+(wire (pts (xy 214.6300 87.6300) (xy 209.5500 87.6300)) (stroke (width 0) (type default)) (uuid "88c1d22b-0600-4151-ba64-3cbc73d8391b"))
+(label "SPK_N" (at 209.5500 87.6300 180.0) (effects (font (size 1.27 1.27))) (uuid "96752677-972c-4f23-bc69-892fe13293ab"))
+(symbol (lib_id "Device:Speaker") (at 265.43 129.54 0) (unit 1)
+ (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+ (uuid "63ce0399-4b56-4edb-afff-09b3bb8b799d") (property "Reference" "LS1" (at 265.4300 117.5400 0) (effects (font (size 1.27 1.27)))) (property "Value" "Shutao 4 ohm / 3 W speaker" (at 265.4300 119.5400 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 265.4300 129.5400 0) (effects (font (size 1.27 1.27)) (hide yes))) (property "Datasheet" "~" (at 265.4300 129.5400 0) (effects (font (size 1.27 1.27)) (hide yes))) (pin "1" (uuid "7baffe89-387a-4afd-acf6-a50e156f86dd")) (pin "2" (uuid "844bf64a-d4fc-4284-aaef-4e0d1e69ac9c"))
+ (instances (project "audio" (path "/ce4a2cb8-cf11-4c0d-9f85-5292a3986b47" (reference "LS1") (unit 1)))) )
+(wire (pts (xy 260.3500 129.5400) (xy 255.2700 129.5400)) (stroke (width 0) (type default)) (uuid "4626c493-31f7-4b5f-bf2e-dc0ce0c13cad"))
+(label "SPK_P" (at 255.2700 129.5400 180.0) (effects (font (size 1.27 1.27))) (uuid "502aae40-2a5f-4f3d-9bb7-39d9960a1ecb"))
+(wire (pts (xy 260.3500 132.0800) (xy 255.2700 132.0800)) (stroke (width 0) (type default)) (uuid "ff9e8e9e-49e1-4d54-b63a-29606dcdb4c2"))
+(label "SPK_N" (at 255.2700 132.0800 180.0) (effects (font (size 1.27 1.27))) (uuid "20d8512f-f1c4-4e40-88fc-3123768b2768"))
+(symbol (lib_id "Connector_Generic:Conn_01x02") (at 129.54 129.54 0) (unit 1)
+ (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+ (uuid "5f10d289-8b91-4220-8238-24a37efcbb69") (property "Reference" "J4" (at 129.5400 117.5400 0) (effects (font (size 1.27 1.27)))) (property "Value" "5V POWER" (at 129.5400 119.5400 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 129.5400 129.5400 0) (effects (font (size 1.27 1.27)) (hide yes))) (property "Datasheet" "~" (at 129.5400 129.5400 0) (effects (font (size 1.27 1.27)) (hide yes))) (pin "1" (uuid "d084b46e-5243-4aa3-9e75-44d8fa4282d2")) (pin "2" (uuid "4db6f38d-2db2-4c3a-af10-d10880774470"))
+ (instances (project "audio" (path "/ce4a2cb8-cf11-4c0d-9f85-5292a3986b47" (reference "J4") (unit 1)))) )
+(wire (pts (xy 124.4600 129.5400) (xy 119.3800 129.5400)) (stroke (width 0) (type default)) (uuid "1867417a-3777-40ce-a7ac-9a3491f32d31"))
+(label "+5V" (at 119.3800 129.5400 180.0) (effects (font (size 1.27 1.27))) (uuid "661c586c-3191-4544-b7c6-41c33c2db713"))
+(wire (pts (xy 124.4600 132.0800) (xy 119.3800 132.0800)) (stroke (width 0) (type default)) (uuid "99033de4-6a54-456f-802d-05506f156a83"))
+(label "GND" (at 119.3800 132.0800 180.0) (effects (font (size 1.27 1.27))) (uuid "83e896e6-7e5d-4f21-8b8e-2044fcf24b06"))
+(text "J1 pins 1–3 connect to ESP32-S3 GPIO15/16/17 (BCLK/LRCLK/DATA OUT); pin 4 is GND." (at 18 22 0) (effects (font (size 1.15 1.15)) (justify left bottom)) (uuid "b62749da-774e-4b7a-9910-cffa015b715a"))
+(text "J2 is the Adafruit #3006 MAX98357A: pins 1–5 are BCLK/LRC/DIN/5 V/GND. J4 supplies regulated 5 V and GND." (at 18 29 0) (effects (font (size 1.15 1.15)) (justify left bottom)) (uuid "82d71b32-1b0f-4fbc-a526-79a03af9fecd"))
+(text "J3 connects to the differential speaker outputs; LS1 is across both outputs, never to GND. See ADR-0010/0011." (at 18 36 0) (effects (font (size 1.15 1.15)) (justify left bottom)) (uuid "8f71799e-143a-45f8-b439-f04eb9464179"))
+ (sheet_instances (path "/" (page "1")))
+)

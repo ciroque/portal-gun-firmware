@@ -52,6 +52,3 @@ gain selection, and volume limits remain separate implementation decisions.
 - [Adafruit #3006 specifications](https://www.adafruit.com/product/3006).
 - [ADR-0007](0007-native-audio-and-standalone-operation.md).
 - [ADR-0008 GPIO allocation](0008-gpio-allocation.md).
-
-Speaker specifications, availability, and amplifier cart status were supplied
-by the owner in the project discussion on 2026-10-25.

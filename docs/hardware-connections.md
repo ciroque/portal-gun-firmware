@@ -1,16 +1,10 @@
 # Hardware connections
 
-This page records the current pin assignments and planned signal wiring for the
-Lonely Binary ESP32-S3-DEVKITC-1 V1.6 board with ESP32-S3-WROOM-1 N16R8. The
-GPIO numbers below are the `IOxx` labels printed beside the board headers, not
-physical header positions. See the [board photos](#board-reference) and
+This page documents the intended hardware wiring for the Lonely Binary
+ESP32-S3-DEVKITC-1 V1.6 board with ESP32-S3-WROOM-1 N16R8. The GPIO numbers
+below are the `IOxx` labels printed beside the board headers, not physical
+header positions. See the [board photos](#board-reference) and
 [ADR-0008](../adr/0008-gpio-allocation.md).
-
-This is a wiring reference, not a completed schematic. The peripherals have
-not been connected to the board, and power distribution/current capacity still
-needs bench validation ([ADR-0011](../adr/0011-power-budget.md)). “Planned”
-means the assignment or component choice is documented; it does not mean the
-connection has been built or tested.
 
 ## Signal overview
 
@@ -21,7 +15,7 @@ flowchart LR
     AHCT[AHCT level buffer]
     RING[12-pixel NeoPixel ring]
     CLED[Three charge indicators<br/>driver details TBD]
-    AMP[MAX98357A amplifier<br/>Adafruit #3006, planned]
+    AMP[MAX98357A amplifier<br/>Adafruit #3006]
     SPKR[One 4 ohm speaker<br/>Shutao, JST-PH2.0]
 
     ESP -- GPIO4-7 --> BTN
@@ -38,20 +32,20 @@ electrical connections, use the tables below and the referenced ADRs.
 
 ## GPIO assignments
 
-| Board header label | GPIO | Connects to | Connection details | Status |
+| Board header label | GPIO | Connects to | Electrical connection / design note |
 | --- | ---: | --- | --- | --- |
-| IO4 | 4 | Trigger switch | Switch between GPIO and common GND; active low, internal pull-up | Assigned; wiring pending |
-| IO5 | 5 | Portal color button | Switch between GPIO and common GND; active low, internal pull-up | Assigned; wiring pending |
-| IO6 | 6 | Acceleration curve button | Switch between GPIO and common GND; active low, internal pull-up | Assigned; wiring pending |
-| IO7 | 7 | Discharge direction button | Switch between GPIO and common GND; active low, internal pull-up | Assigned; wiring pending |
-| IO8 | 8 | NeoPixel data path | GPIO data to AHCT buffer, then buffer output to ring data input | Assigned; wiring pending |
-| IO9 | 9 | Charge indicator 1 | Control output; LED driver/current-limit circuit must be established before wiring | Assigned; circuit TBD |
-| IO10 | 10 | Charge indicator 2 | Control output; LED driver/current-limit circuit must be established before wiring | Assigned; circuit TBD |
-| IO11 | 11 | Charge indicator 3 | Control output; LED driver/current-limit circuit must be established before wiring | Assigned; circuit TBD |
-| IO12 | 12 | Muzzle emitter enable | Reserved; leave unconnected and unconfigured in the initial build | Deferred by ADR-0009 |
-| IO15 | 15 | MAX98357A BCLK | I2S bit clock | Assigned |
-| IO16 | 16 | MAX98357A LRC/LRCLK | I2S word select | Assigned |
-| IO17 | 17 | MAX98357A DIN | I2S data out from ESP32 | Assigned |
+| IO4 | 4 | Trigger switch | Switch between GPIO and common GND; active low with internal pull-up |
+| IO5 | 5 | Portal color button | Switch between GPIO and common GND; active low with internal pull-up |
+| IO6 | 6 | Acceleration curve button | Switch between GPIO and common GND; active low with internal pull-up |
+| IO7 | 7 | Discharge direction button | Switch between GPIO and common GND; active low with internal pull-up |
+| IO8 | 8 | NeoPixel data path | GPIO data to AHCT buffer, then buffer output to ring data input |
+| IO9 | 9 | Charge indicator 1 | Control output; LED driver/current-limit circuit remains to be designed |
+| IO10 | 10 | Charge indicator 2 | Control output; LED driver/current-limit circuit remains to be designed |
+| IO11 | 11 | Charge indicator 3 | Control output; LED driver/current-limit circuit remains to be designed |
+| IO12 | 12 | Muzzle emitter enable | Reserved for the deferred muzzle emitter; unused in this build |
+| IO15 | 15 | MAX98357A BCLK | I2S bit clock |
+| IO16 | 16 | MAX98357A LRC/LRCLK | I2S word select |
+| IO17 | 17 | MAX98357A DIN | I2S data out from ESP32 |
 
 Do not connect bare LEDs directly to GPIO9–11. The LED current limiting and
 driver circuit is not specified here. The RGB LED on the dev board is GPIO48;
@@ -116,16 +110,9 @@ peripheral connection.
 | Component side | ![ESP32-S3 board, component side](ESP32-S3-top.JPG) |
 | Back side | ![ESP32-S3 board, back side](ESP32-S3-bottom.JPG) |
 
-## Circuit diagrams
+## Circuit schematics
 
-Mermaid is useful for signal-flow overviews such as the one above, but its
-diagram types are not an electronic schematic format with circuit symbols,
-electrical nets, and design checks. If the project needs a true circuit
-schematic, create it in a circuit-design tool such as KiCad, commit its source
-file, and export SVG for embedding here. Keep this GPIO table aligned with
-[ADR-0008](../adr/0008-gpio-allocation.md) as the quick pin lookup.
-
-Initial KiCad-format functional wiring maps for each subsystem are in
-[`docs/kicad/`](kicad/README.md). They communicate the present assignments and
-open decisions, but use illustrative graphics rather than electrical symbols
-and nets; they are not complete build schematics or ERC-checked designs.
+KiCad projects with subsystem schematics are in [`docs/kicad/`](kicad/README.md).
+The charge-indicator page shows only its assigned GPIO interface because its
+LED driver/current-limit circuit is undecided; the deferred muzzle emitter has
+no build schematic.

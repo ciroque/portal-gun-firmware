@@ -1,0 +1,187 @@
+(kicad_sch
+ (version 20250114) (generator "eeschema") (generator_version "9.0")
+ (uuid "c6169da4-cc15-4f37-b722-8350e353618d") (paper "A4")
+ (title_block (title "Portal Gun — Charge Indicator Interface") (rev "1.0") (comment 1 "Electrical wiring schematic; verify against selected modules before assembly."))
+ (lib_symbols (symbol "Connector_Generic:Conn_01x03"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "J"
+			(at 0 5.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x03"
+			(at 0 -5.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(symbol "Conn_01x03_1_1"
+			(rectangle
+				(start -1.27 3.81)
+				(end 1.27 -3.81)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 2.667)
+				(end 0 2.413)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 2.54 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	))
+ (symbol (lib_id "Connector_Generic:Conn_01x03") (at 80.01 69.85 0) (unit 1)
+ (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+ (uuid "d6de67e5-6b06-4354-9262-0715fa70d316") (property "Reference" "J1" (at 80.0100 57.8500 0) (effects (font (size 1.27 1.27)))) (property "Value" "ESP32-S3 charge outputs" (at 80.0100 59.8500 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 80.0100 69.8500 0) (effects (font (size 1.27 1.27)) (hide yes))) (property "Datasheet" "~" (at 80.0100 69.8500 0) (effects (font (size 1.27 1.27)) (hide yes))) (pin "1" (uuid "e747ddec-0433-40ec-8e97-f4ec8ce17f2a")) (pin "2" (uuid "d947b1e8-a285-450c-9b15-28511c91824a")) (pin "3" (uuid "14a83833-fcba-4257-9efb-2d92c27264a4"))
+ (instances (project "charge-indicators" (path "/c6169da4-cc15-4f37-b722-8350e353618d" (reference "J1") (unit 1)))) )
+(no_connect (at 74.9300 67.3100) (uuid "07363d21-fd2e-49f3-99f1-5a128241335e"))
+(no_connect (at 74.9300 69.8500) (uuid "93d32a7f-a0bd-4adf-8063-0bb95de2b7dc"))
+(no_connect (at 74.9300 72.3900) (uuid "392c5471-d265-415c-9de6-8d23de11f2d9"))
+(text "Only the controller GPIO assignments are specified here: GPIO9, GPIO10, and GPIO11." (at 18 22 0) (effects (font (size 1.15 1.15)) (justify left bottom)) (uuid "06176719-433c-472f-b441-e7a1f5b5d1e6"))
+(text "J1 pins 1/2/3 correspond to GPIO9/10/11. LED type, current limiting, driver topology, and supply are not yet designed; this sheet intentionally has no downstream LED circuit." (at 18 29 0) (effects (font (size 1.15 1.15)) (justify left bottom)) (uuid "21636d1d-f82b-429d-91ea-73a5f946d6e2"))
+(text "Do not connect bare LEDs directly to GPIO pins. Timing behavior is in ADR-0012." (at 18 36 0) (effects (font (size 1.15 1.15)) (justify left bottom)) (uuid "27993b17-2b8d-445b-91d5-29e867c7f142"))
+ (sheet_instances (path "/" (page "1")))
+)
